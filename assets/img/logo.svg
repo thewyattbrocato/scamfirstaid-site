@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 96" role="img" aria-label="Scam First Aid">
+  <g>
+    <path d="M14 10h68a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12H46L26 90V74H14A12 12 0 0 1 2 62V22A12 12 0 0 1 14 10Z" fill="#17635a"/>
+    <path d="M39 24h18v14h14v18H57v14H39V56H25V38h14z" fill="#fdfbf7"/>
+  </g>
+  <text x="112" y="63" font-family="'Source Sans 3','Source Sans Pro',-apple-system,'Segoe UI',Roboto,Arial,sans-serif" font-size="42" font-weight="700" letter-spacing="-0.5" fill="#21313c">Scam First Aid</text>
+</svg>

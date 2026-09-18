@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 190" role="img" aria-labelledby="path-title path-desc">
+  <title id="path-title">Choose, answer, and get a plan</title>
+  <desc id="path-desc">Choose your starting point, answer a few questions, and get an ordered plan you can print.</desc>
+  <rect width="760" height="190" rx="20" fill="#e3eee6"/>
+  <g fill="#fdfbf7" stroke="#21313c" stroke-width="3">
+    <rect x="18" y="30" width="210" height="130" rx="16"/>
+    <rect x="275" y="30" width="210" height="130" rx="16"/>
+    <rect x="532" y="30" width="210" height="130" rx="16"/>
+  </g>
+  <g fill="none" stroke="#17635a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M238 95h24"/>
+    <path d="m251 84 13 11-13 11"/>
+    <path d="M495 95h24"/>
+    <path d="m508 84 13 11-13 11"/>
+  </g>
+  <g font-family="Arial, sans-serif" fill="#21313c" text-anchor="middle">
+    <circle cx="55" cy="66" r="18" fill="#17635a"/>
+    <text x="55" y="73" fill="#ffffff" font-size="20" font-weight="700">1</text>
+    <text x="123" y="101" font-size="22" font-weight="700">Choose</text>
+    <text x="123" y="128" font-size="17">a starting point</text>
+    <circle cx="312" cy="66" r="18" fill="#17635a"/>
+    <text x="312" y="73" fill="#ffffff" font-size="20" font-weight="700">2</text>
+    <text x="380" y="101" font-size="22" font-weight="700">Answer</text>
+    <text x="380" y="128" font-size="17">a few questions</text>
+    <circle cx="569" cy="66" r="18" fill="#17635a"/>
+    <text x="569" y="73" fill="#ffffff" font-size="20" font-weight="700">3</text>
+    <text x="637" y="101" font-size="22" font-weight="700">Get</text>
+    <text x="637" y="128" font-size="17">an ordered plan</text>
+  </g>
+</svg>
