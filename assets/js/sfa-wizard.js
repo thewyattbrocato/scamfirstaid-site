@@ -254,9 +254,16 @@
         render();
       }
 
-      function sayBlock(line) {
-        var block = el('div', 'say-block');
-        block.appendChild(el('p', 'step-label', 'Say this'));
+      function helperMode() {
+        var who = (state.answers.who || [])[0];
+        if (who === 'family') return 'helper';
+        if (who === 'unsure') return 'both';
+        return 'me';
+      }
+
+      function sayBlock(line, label, extraClass) {
+        var block = el('div', 'say-block' + (extraClass ? ' ' + extraClass : ''));
+        block.appendChild(el('p', 'step-label', label || 'Say this'));
         var quote = el('blockquote');
         quote.textContent = line;
         block.appendChild(quote);
@@ -278,7 +285,8 @@
           a.href = window.SFA.telHref(p.phone);
           a.textContent = window.SFA.prettyPhone(p.phone);
           li.appendChild(a);
-          li.appendChild(document.createTextNode(' ' + p.label));
+          li.appendChild(document.createTextNode(' ' + p.label + ' '));
+          li.appendChild(window.SFA.phoneStateNode(window.SFA.findPhone(p.agency ? agenciesById[p.agency] : null, p.phone)));
           list.appendChild(li);
         });
         (step.links || []).forEach(function (l) {
@@ -318,9 +326,10 @@
       }
 
       function crisisBox() {
+        var copy = data.copy.crisisBox;
         var box = el('section', 'crisis-box');
         box.setAttribute('aria-labelledby', 'crisis-title');
-        var h3 = el('h3', null, 'Free help, any hour');
+        var h3 = el('h3', null, copy.title);
         h3.id = 'crisis-title';
         box.appendChild(h3);
         var ul = el('ul');
@@ -336,6 +345,10 @@
           a.href = window.SFA.telHref(record.number);
           a.textContent = window.SFA.prettyPhone(record.number);
           return a;
+        }
+        function stateNode(agencyId) {
+          var record = phoneRecord(agencyId);
+          return record ? window.SFA.phoneStateNode(record) : null;
         }
         function siteLink(agencyId) {
           var agency = agenciesById[agencyId];
@@ -357,22 +370,24 @@
           ul.appendChild(li);
         }
 
-        item('Feeling overwhelmed or hopeless?', [
-          'Call or text ', telLink('lifeline-988'), ', or visit ', siteLink('lifeline-988'), '.'
-        ]);
-        item('Worried about an older adult?', [
-          'Call ', telLink('eldercare-locator'), ' for help near them, or visit ', siteLink('eldercare-locator'), '.'
-        ]);
-        item('Age 60 or older and scammed?', [
-          'Trained staff call you back and walk you through reporting. Call ',
-          telLink('ovc-elder-hotline'),
-          (function () {
-            var hours = phoneRecord('ovc-elder-hotline');
-            return hours && hours.hours ? ' (' + hours.hours + ')' : '';
-          })(),
-          ', or visit ', siteLink('ovc-elder-hotline'), '.'
-        ]);
-        ul.appendChild(el('li', 'danger-line', 'Anyone in immediate danger? Call 911.'));
+        copy.items.forEach(function (entry) {
+          item(entry.lead, entry.parts.map(function (part) {
+            if (typeof part === 'string') return part;
+            if (part.slot === 'tel') return telLink(entry.agency);
+            if (part.slot === 'state') return stateNode(entry.agency);
+            if (part.slot === 'site') return siteLink(entry.agency);
+            if (part.slot === 'warning') {
+              var warned = agenciesById[entry.agency];
+              return warned && warned.warning ? ' ' + warned.warning : '';
+            }
+            if (part.slot === 'hours') {
+              var record = phoneRecord(entry.agency);
+              return record && record.hours ? ' (' + record.hours + ')' : '';
+            }
+            return null;
+          }));
+        });
+        ul.appendChild(el('li', 'danger-line', copy.dangerLine));
         box.appendChild(ul);
         return box;
       }
@@ -400,6 +415,145 @@
         return sec;
       }
 
+      function helperCardEl(collapsed) {
+        var block = stepsCatalog.helperCard;
+        if (!block || !block.items) return null;
+        var root = document.createElement(collapsed ? 'details' : 'section');
+        root.className = 'helper-card' + (collapsed ? ' helper-fold' : '');
+        var body = root;
+        if (collapsed) {
+          root.appendChild(el('summary', null, block.foldTitle));
+        } else {
+          var h3 = el('h3', null, block.title);
+          h3.id = 'helper-title';
+          root.setAttribute('aria-labelledby', 'helper-title');
+          root.appendChild(h3);
+        }
+        body.appendChild(el('p', null, block.intro));
+        var ul = el('ul', 'helper-items');
+        block.items.forEach(function (item) {
+          var li = el('li');
+          li.appendChild(el('span', null, item.text));
+          li.appendChild(document.createTextNode(' '));
+          if (item.phoneAgency && agenciesById[item.phoneAgency]) {
+            (agenciesById[item.phoneAgency].phones || []).forEach(function (p) {
+              li.appendChild(document.createTextNode(' '));
+              var t = document.createElement('a');
+              t.className = 'phone-link';
+              t.href = window.SFA.telHref(p.number);
+              t.textContent = window.SFA.prettyPhone(p.number);
+              li.appendChild(t);
+              li.appendChild(document.createTextNode(' '));
+              li.appendChild(window.SFA.phoneStateNode(p));
+            });
+          }
+          var src = el('span', 'source-line');
+          if (item.source) {
+            var a = document.createElement('a');
+            a.href = item.source.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = item.source.title;
+            src.appendChild(document.createTextNode('Source: '));
+            src.appendChild(a);
+          } else {
+            src.classList.add('own-advice');
+            src.textContent = 'Our own advice, not from an agency.';
+          }
+          li.appendChild(src);
+          ul.appendChild(li);
+        });
+        body.appendChild(ul);
+        body.appendChild(el('h4', 'helper-dir-title', block.directoryTitle));
+        var dir = el('ul', 'helper-directory');
+        (block.directory || []).forEach(function (id) {
+          var agency = agenciesById[id];
+          if (!agency) return;
+          var li = el('li');
+          li.appendChild(el('strong', null, agency.name));
+          (agency.urls || []).forEach(function (u) {
+            li.appendChild(document.createTextNode(' '));
+            var a = document.createElement('a');
+            a.href = u.url;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = u.label;
+            li.appendChild(a);
+          });
+          (agency.phones || []).forEach(function (p) {
+            li.appendChild(document.createTextNode(' '));
+            var t = document.createElement('a');
+            t.className = 'phone-link';
+            t.href = window.SFA.telHref(p.number);
+            t.textContent = window.SFA.prettyPhone(p.number);
+            li.appendChild(t);
+            if (p.hours) li.appendChild(document.createTextNode(' (' + p.hours + ')'));
+            li.appendChild(document.createTextNode(' '));
+            li.appendChild(window.SFA.phoneStateNode(p));
+          });
+          if (agency.warning) li.appendChild(document.createTextNode(' ' + agency.warning));
+          dir.appendChild(li);
+        });
+        body.appendChild(dir);
+        return root;
+      }
+
+      function conversationSituation() {
+        var tags = collectTags();
+        function has(prefix) {
+          return tags.some(function (t) {
+            return t.indexOf(prefix) === 0 && t !== 'money_none';
+          });
+        }
+        if (tags.indexOf('contact_ongoing') !== -1) return 'ongoing';
+        if (has('money_') || has('info_') || has('id_')) return 'lost';
+        return null;
+      }
+
+      function wordsHref(situation) {
+        return 'family.html' + (situation ? '#situation=' + situation : '');
+      }
+
+      function wordsJump() {
+        var block = stepsCatalog.helperWords;
+        if (!block) return null;
+        var p = el('p', 'helper-jump');
+        var a = el('a', null, block.jumpLabel);
+        a.href = '#helper-words';
+        p.appendChild(a);
+        return p;
+      }
+
+      function wordsBlock() {
+        var block = stepsCatalog.helperWords;
+        if (!block) return null;
+        var situation = conversationSituation();
+        var sec = el('section', 'helper-words');
+        sec.setAttribute('aria-labelledby', 'helper-words');
+        var h3 = el('h3', null, block.title);
+        h3.id = 'helper-words';
+        h3.setAttribute('tabindex', '-1');
+        sec.appendChild(h3);
+        sec.appendChild(el('p', null, block.intro));
+        var chosen = situation ? block.cases[situation] : null;
+        var scenario = null;
+        if (chosen) {
+          data.familyGuide.scenarios.forEach(function (sc) {
+            if (sc.id === chosen.scenario) scenario = sc;
+          });
+        }
+        if (scenario) {
+          scenario.lines.slice(0, chosen.lines).forEach(function (line) {
+            sec.appendChild(sayBlock(line, 'You can say'));
+          });
+        }
+        var link = el('a', 'btn', block.linkLabel);
+        link.href = wordsHref(situation);
+        sec.appendChild(link);
+        sec.appendChild(el('p', 'step-note', block.linkNote));
+        return sec;
+      }
+
       function walletCard() {
         var sec = el('section', 'wallet-card');
         sec.setAttribute('aria-labelledby', 'wallet-title');
@@ -421,7 +575,8 @@
           hot.textContent = window.SFA.prettyPhone(rec.number);
           line.appendChild(hot);
           if (rec.hours) line.appendChild(document.createTextNode(' (' + rec.hours + ')'));
-          line.appendChild(document.createTextNode('.'));
+          line.appendChild(document.createTextNode(' '));
+          line.appendChild(window.SFA.phoneStateNode(rec));
           ul.appendChild(line);
         }
         var crisis = el('li');
@@ -430,7 +585,9 @@
         now.href = window.SFA.telHref('988');
         now.textContent = '988';
         crisis.appendChild(now);
-        crisis.appendChild(document.createTextNode('.'));
+        crisis.appendChild(document.createTextNode(' '));
+        var nowRec = agenciesById['lifeline-988'] ? window.SFA.findPhone(agenciesById['lifeline-988'], '988') : null;
+        crisis.appendChild(window.SFA.phoneStateNode(nowRec));
         ul.appendChild(crisis);
         sec.appendChild(ul);
         return sec;
@@ -457,9 +614,23 @@
         why.appendChild(document.createTextNode(s.why));
         card.appendChild(why);
 
+        var mode = helperMode();
         (s.say || []).forEach(function (line) {
-          card.appendChild(sayBlock(line));
+          var label = mode === 'helper' ? 'Your relative says' : 'Say this';
+          card.appendChild(sayBlock(line, label));
         });
+        if (mode !== 'me' && s.helper) {
+          var labels = stepsCatalog.helperLabels;
+          [['say', 'You say (the helper)', 'If you are the helper, you say'],
+            ['withThem', labels.withThem, 'If you are the helper and they are with you or on the call'],
+            ['cannotJoin', labels.cannotJoin, 'If you are the helper and they cannot join right now']
+          ].forEach(function (group) {
+            (s.helper[group[0]] || []).forEach(function (line) {
+              var label = mode === 'helper' ? (group[0] === 'say' ? labels.say : group[1]) : group[2];
+              card.appendChild(sayBlock(line, label, 'say-helper'));
+            });
+          });
+        }
 
         if (s.note) {
           var note = el('p', 'step-note');
@@ -546,30 +717,57 @@
         planRoot.appendChild(brand);
         planRoot.appendChild(buildPlanHeader());
 
-        planRoot.appendChild(el('p', 'lede', 'Work top to bottom. Each step tells you what to do, why it matters, and what to say.'));
+        var mode = helperMode();
+        document.body.classList.toggle('plan-helper', mode !== 'me');
+        var lede = 'Work top to bottom. Each step tells you what to do, why it matters, and what to say.';
+        if (mode === 'helper' && stepsCatalog.helperLede) lede = stepsCatalog.helperLede;
+        planRoot.appendChild(el('p', 'lede', lede));
 
-        var evidence = evidenceBox();
-        if (evidence) planRoot.appendChild(evidence);
-
-        var summaryWrap = el('div', 'summary-wrap');
-        summaryWrap.appendChild(el('p', 'step-label', 'Your answers'));
-        var chips = el('ul', 'summary-chips');
-        flow.questions.forEach(function (q) {
-          (state.answers[q.id] || []).forEach(function (pid) {
-            var o = optionFor(q, pid);
-            if (!o) return;
-            chips.appendChild(el('li', 'chip', o.label));
+        function recap() {
+          var summaryWrap = el('div', 'summary-wrap');
+          summaryWrap.appendChild(el('p', 'step-label', 'Your answers'));
+          var chips = el('ul', 'summary-chips');
+          flow.questions.forEach(function (q) {
+            (state.answers[q.id] || []).forEach(function (pid) {
+              var o = optionFor(q, pid);
+              if (!o) return;
+              chips.appendChild(el('li', 'chip', (q.chipLabel ? q.chipLabel + ': ' : '') + o.label));
+            });
           });
+          summaryWrap.appendChild(chips);
+          return summaryWrap;
+        }
+
+        // Helper plans put the first steps above the helper extras, so the first action is on the first screen.
+        var extras = [];
+        if (mode !== 'me') {
+          var jump = wordsJump();
+          if (jump) planRoot.appendChild(jump);
+          var words = wordsBlock();
+          if (words) extras.push(words);
+          var helperCard = helperCardEl(mode === 'both');
+          if (helperCard) extras.push(helperCard);
+        }
+        var evidence = evidenceBox();
+        if (evidence) extras.push(evidence);
+        extras.push(recap());
+        if (mode === 'me') extras.forEach(function (node) {
+          planRoot.appendChild(node);
         });
-        summaryWrap.appendChild(chips);
-        planRoot.appendChild(summaryWrap);
 
         var listWrap = el('div', 'plan-list-wrap');
         var currentTier = null;
         var currentOl = null;
         var stepNumber = 1;
+        var extrasPlaced = mode === 'me';
         steps.forEach(function (s) {
           if (s.tier !== currentTier) {
+            if (!extrasPlaced && currentTier !== null) {
+              extras.forEach(function (node) {
+                listWrap.appendChild(node);
+              });
+              extrasPlaced = true;
+            }
             currentTier = s.tier;
             currentOl = el('ol', 'plan-list');
             currentOl.start = stepNumber;
@@ -581,6 +779,11 @@
           currentOl.appendChild(item);
           stepNumber += 1;
         });
+        if (!extrasPlaced) {
+          extras.forEach(function (node) {
+            listWrap.appendChild(node);
+          });
+        }
         planRoot.appendChild(listWrap);
         planRoot.appendChild(crisisBox());
         planRoot.appendChild(walletCard());
@@ -592,7 +795,7 @@
       }
 
       function renderQuestion() {
-        document.body.classList.remove('plan-shown');
+        document.body.classList.remove('plan-shown', 'plan-helper');
         planRoot.hidden = true;
         planRoot.innerHTML = '';
         root.hidden = false;

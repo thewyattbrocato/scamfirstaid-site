@@ -37,6 +37,10 @@
         if (hasOption(relSel, saved.relationship)) relationship = saved.relationship;
         if (hasOption(sitSel, saved.situation)) situation = saved.situation;
       }
+      // The plan links here with only a scenario name in the URL fragment (#situation=lost).
+      // It never holds answers or personal data, and it wins over the saved choice.
+      var carried = /^#situation=(lost|ongoing)$/.exec(window.location.hash || '');
+      if (carried && hasOption(sitSel, carried[1])) situation = carried[1];
       relSel.value = relationship;
       sitSel.value = situation;
       populateScenarios(relationship);
@@ -137,8 +141,11 @@
         return checked ? checked.value : cadence;
       }
 
-      function openerText(relationshipId) {
-        return (guide.openers[relationshipId] || guide.openers.relative);
+      function openerText(relationshipId, situationId) {
+        var set = guide.openers;
+        if (situationId === 'lost' && guide.openersAfterLoss) set = guide.openersAfterLoss;
+        if (situationId === 'ongoing' && guide.openersOngoing) set = guide.openersOngoing;
+        return set[relationshipId] || set.relative;
       }
 
       function sayGroup(lines) {
@@ -186,6 +193,7 @@
         li.appendChild(document.createTextNode(item.text));
         var agency = item.agency ? agenciesById[item.agency] : null;
         appendAgencyContact(li, agency, { phoneDetails: true });
+        if (agency && agency.warning) li.appendChild(document.createTextNode(' ' + agency.warning));
         return li;
       }
 
@@ -211,6 +219,8 @@
             if (phoneRecord.label) parent.appendChild(document.createTextNode(' ' + phoneRecord.label));
             if (phoneRecord.hours) parent.appendChild(document.createTextNode(' (' + phoneRecord.hours + ')'));
           }
+          parent.appendChild(document.createTextNode(' '));
+          parent.appendChild(window.SFA.phoneStateNode(phoneRecord));
           added = true;
         }
         if (agency && agency.urls && agency.urls[0]) {
@@ -245,7 +255,8 @@
           hot.textContent = window.SFA.prettyPhone(rec.number);
           line.appendChild(hot);
           if (rec.hours) line.appendChild(document.createTextNode(' (' + rec.hours + ')'));
-          line.appendChild(document.createTextNode('.'));
+          line.appendChild(document.createTextNode(' '));
+          line.appendChild(window.SFA.phoneStateNode(rec));
           ul.appendChild(line);
         }
         var crisis = el('li');
@@ -254,7 +265,9 @@
         now.href = window.SFA.telHref('988');
         now.textContent = '988';
         crisis.appendChild(now);
-        crisis.appendChild(document.createTextNode('.'));
+        crisis.appendChild(document.createTextNode(' '));
+        var nowAgency = agenciesById['lifeline-988'];
+        crisis.appendChild(window.SFA.phoneStateNode(nowAgency ? window.SFA.findPhone(nowAgency, '988') : null));
         ul.appendChild(crisis);
         sec.appendChild(ul);
         return sec;
@@ -292,7 +305,7 @@
 
         var openSec = el('section');
         openSec.appendChild(el('h3', null, 'Open the conversation'));
-        var opener = sayGroup([openerText(relationshipId)]);
+        var opener = sayGroup([openerText(relationshipId, situationId)]);
         openSec.appendChild(opener);
         openSec.appendChild(el('p', null, guide.intro));
         out.appendChild(openSec);

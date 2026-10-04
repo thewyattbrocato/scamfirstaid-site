@@ -39,6 +39,7 @@ body.plan-shown #help-directory {
 .wiz-actions,
 .wiz-reassure,
 .plan-actions,
+.helper-jump,
 .summary-wrap,
 .copy-btn,
 .done-box,
@@ -104,6 +105,7 @@ h3 { font-size: 13pt; }
 }
 
 .evidence-box,
+.helper-words,
 .wallet-card {
   border: 1.5pt solid #000;
   border-radius: 0;
@@ -167,6 +169,7 @@ h3 { font-size: 13pt; }
 }
 
 .wallet-card li { margin-bottom: 1pt; }
+.wallet-card .phone-state { font-size: 6pt; }
 
 .tier-heading {
   break-after: avoid;
@@ -191,6 +194,14 @@ h3 { font-size: 13pt; }
 .contacts li { margin: 1pt 0; }
 
 .phone-link { font-size: 10.5pt; }
+
+.phone-state {
+  font-size: 7.5pt;
+  color: #000;
+  border: 0.5pt solid #000;
+  padding: 0 2pt;
+}
+.phone-state-flag { font-weight: 700; border-style: dashed; background: none; }
 
 .source-line {
   font-size: 8.5pt;

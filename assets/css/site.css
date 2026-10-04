@@ -188,6 +188,23 @@ main {
     flex-direction: column;
   }
   main.home .doors { order: -1; }
+  /* Helper plans: first step within one phone screen (tests/helper.test.mjs pins it). */
+  body.plan-helper .page-intro {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  body.plan-helper .plan-header h2 { font-size: 1.35rem; }
+  body.plan-helper #plan > .lede { font-size: 1rem; margin: 0.5rem 0; }
+  body.plan-helper .helper-jump { font-size: 0.95rem; margin: 0; }
+  body.plan-helper .plan-header { margin-top: 1rem; padding-top: 0.75rem; }
+  body.plan-helper .plan-actions { flex-wrap: nowrap; gap: 0.35rem; }
+  body.plan-helper .plan-actions .btn { padding: 0.5rem 0.6rem; font-size: 0.85rem; min-height: 44px; }
+  body.plan-helper .plan-date { margin-top: 0.15rem; }
+  body.plan-helper .tier-heading { margin-top: 0.75rem; }
 }
 
 .doors {
@@ -487,6 +504,24 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   font-size: 1.15rem;
 }
 
+.phone-state {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 0.6em;
+  padding: 0 0.4em;
+  margin: 0 0.15em;
+}
+.phone-state-flag {
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--soft);
+  border-style: dashed;
+  border-radius: 0.4em;
+}
+
 .source-line {
   font-size: 0.9rem;
   color: var(--line);
@@ -726,6 +761,33 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 .evidence-box h3 { margin-top: 0; }
 .evidence-box ul { padding-left: 1.25rem; margin-bottom: 0; }
 .evidence-box li { margin-bottom: 0.4rem; }
+
+.helper-card {
+  border: 2px solid var(--calm-dark);
+  border-radius: 14px;
+  background: var(--calm-soft);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  overflow-wrap: anywhere;
+}
+.helper-card h3 { margin-top: 0; }
+.helper-card ul { padding-left: 1.25rem; margin-bottom: 0; }
+.helper-card li { margin-bottom: 0.5rem; }
+.helper-card summary { font-weight: 700; cursor: pointer; min-height: 2.75rem; }
+.helper-card .source-line { display: block; font-size: 0.9rem; }
+.helper-dir-title { margin: 1rem 0 0.4rem; }
+.helper-jump { margin: 0.25rem 0 0; font-size: 1rem; }
+.helper-words {
+  border: 2px solid var(--calm-dark);
+  border-radius: 14px;
+  background: var(--calm-soft);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  overflow-wrap: anywhere;
+}
+.helper-words h3 { margin-top: 0; }
+.helper-words .step-note { margin-bottom: 0; }
+.say-helper { border-style: dashed; }
 
 .wallet-card {
   border: 2px dashed var(--ink);

@@ -2,7 +2,7 @@
 window.SFA_DATA = Object.freeze({
   "generatedFrom": "data/",
   "agencies": {
-    "registryVersion": 4,
+    "registryVersion": 6,
     "agencies": [
       {
         "id": "ftc-reportfraud",
@@ -99,7 +99,9 @@ window.SFA_DATA = Object.freeze({
         "phones": [
           {
             "label": "FCC consumer line",
-            "number": "18882255322"
+            "number": "18882255322",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-08",
@@ -124,9 +126,9 @@ window.SFA_DATA = Object.freeze({
       {
         "id": "annualcreditreport",
         "name": "AnnualCreditReport.com",
-        "summary": "The official free site for credit reports from all three bureaus. All three reports are permanently free every week. Call 1-877-322-8228.",
+        "summary": "The official free site for credit reports from all three bureaus. Reports are free every week. Call 1-877-322-8228.",
         "journey": "ongoing",
-        "for": "Pull your free weekly credit reports from all three bureaus.",
+        "for": "Pull your free credit reports from all three bureaus.",
         "urls": [
           {
             "label": "AnnualCreditReport.com",
@@ -136,7 +138,9 @@ window.SFA_DATA = Object.freeze({
         "phones": [
           {
             "label": "AnnualCreditReport.com phone",
-            "number": "18773228228"
+            "number": "18773228228",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-08",
@@ -173,15 +177,21 @@ window.SFA_DATA = Object.freeze({
         "phones": [
           {
             "label": "Apple or iTunes gift cards",
-            "number": "18002752273"
+            "number": "18002752273",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           },
           {
             "label": "Amazon gift cards",
-            "number": "18882804331"
+            "number": "18882804331",
+            "verifiedState": "unverified",
+            "verifiedNote": "The FTC lists this number. Amazon's own help pages do not. You can also use the number on the back of the card."
           },
           {
             "label": "Target gift cards",
-            "number": "18005442943"
+            "number": "18005442943",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-08",
@@ -190,9 +200,9 @@ window.SFA_DATA = Object.freeze({
       {
         "id": "eldercare-locator",
         "name": "Eldercare Locator",
-        "summary": "A free phone service for older adults. It finds local Adult Protective Services offices.",
+        "summary": "A free phone service for older adults. Trained operators refer you to a local agency that can help. It can also help you find your state's Adult Protective Services reporting number.",
         "journey": "ongoing",
-        "for": "Find local elder help, including Adult Protective Services, by phone.",
+        "for": "Find local elder help, or your state's Adult Protective Services number, by phone.",
         "urls": [
           {
             "label": "eldercare.acl.gov",
@@ -202,7 +212,9 @@ window.SFA_DATA = Object.freeze({
         "phones": [
           {
             "label": "Eldercare Locator",
-            "number": "18006771116"
+            "number": "18006771116",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-08",
@@ -211,9 +223,10 @@ window.SFA_DATA = Object.freeze({
       {
         "id": "ovc-elder-hotline",
         "name": "DOJ National Elder Fraud Hotline",
-        "summary": "Trained staff call you back and walk you through reporting. For people aged 60 and over. Free.",
+        "summary": "Call to reach a case manager who will help you through the reporting process. For reports about anyone age 60 or older. Free. The hotline cannot guarantee you get your money back.",
+        "warning": "Scammers use the hotline's name and phone number. They threaten to file a suit. They ask for personal information or money. Do not give personal information, such as a social security number, or money.",
         "journey": "day",
-        "for": "Get a call back from trained staff if you are 60 or older.",
+        "for": "Report fraud against anyone age 60 or older to a case manager.",
         "urls": [
           {
             "label": "National Elder Fraud Hotline",
@@ -224,7 +237,9 @@ window.SFA_DATA = Object.freeze({
           {
             "label": "National Elder Fraud Hotline",
             "hours": "Mon-Fri, 10 a.m.-6 p.m. ET",
-            "number": "18333728311"
+            "number": "18333728311",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-08",
@@ -245,7 +260,9 @@ window.SFA_DATA = Object.freeze({
         "phones": [
           {
             "label": "Call or text",
-            "number": "988"
+            "number": "988",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-08",
@@ -384,7 +401,7 @@ window.SFA_DATA = Object.freeze({
         "name": "Social Security scams hub",
         "summary": "The official hub for Social Security scams. It links the form to report fake calls.",
         "journey": "week",
-        "for": "Use the official hub to report scams and lock your record.",
+        "for": "Report scams at the hub, or call to block electronic access to your record.",
         "urls": [
           {
             "label": "SSA scam hub",
@@ -398,11 +415,13 @@ window.SFA_DATA = Object.freeze({
         "phones": [
           {
             "label": "Social Security",
-            "number": "18007721213"
+            "number": "18007721213",
+            "verifiedState": "verified",
+            "verifiedOn": "2026-10-03"
           }
         ],
         "reviewed": "2026-09",
-        "sourceUrl": "https://www.ssa.gov/scam/"
+        "sourceUrl": "https://www.ssa.gov/agency/contact/phone.html"
       },
       {
         "id": "doj-elderjustice",
@@ -488,14 +507,15 @@ window.SFA_DATA = Object.freeze({
   },
   "flow": {
     "flowId": "triage",
-    "version": 4,
+    "version": 6,
     "entry": "who",
     "end": "END",
     "questions": [
       {
         "id": "who",
+        "chipLabel": "Who needs help",
         "text": "Who needs help today?",
-        "whyWeAsk": "The steps differ a little when you act for someone else.",
+        "whyWeAsk": "Helpers get a short card and scripts for the call. If you are not sure, you see both.",
         "type": "single",
         "options": [
           {
@@ -525,6 +545,7 @@ window.SFA_DATA = Object.freeze({
       },
       {
         "id": "money",
+        "chipLabel": "Paid with",
         "text": "Did money move to the scammer?",
         "whyWeAsk": "Each payment method has its own recovery path.",
         "type": "single",
@@ -606,8 +627,9 @@ window.SFA_DATA = Object.freeze({
       },
       {
         "id": "when",
+        "chipLabel": "When",
         "text": "When did the money move?",
-        "whyWeAsk": "Banks can pull the money back best within 24 hours.",
+        "whyWeAsk": "The quicker you act, the better your chance of getting your money back.",
         "type": "single",
         "options": [
           {
@@ -647,6 +669,7 @@ window.SFA_DATA = Object.freeze({
       },
       {
         "id": "info",
+        "chipLabel": "Shared",
         "text": "What information did you share? Choose all that apply.",
         "whyWeAsk": "Shared details decide which locks you need.",
         "type": "multi",
@@ -688,6 +711,7 @@ window.SFA_DATA = Object.freeze({
       },
       {
         "id": "device",
+        "chipLabel": "Device access",
         "text": "Did anyone get into your device or computer?",
         "whyWeAsk": "Remote access means the scammer may still be watching.",
         "type": "single",
@@ -719,6 +743,7 @@ window.SFA_DATA = Object.freeze({
       },
       {
         "id": "contact",
+        "chipLabel": "Still in contact",
         "text": "Are they still contacting you?",
         "whyWeAsk": "Ongoing contact means more chances to lose money.",
         "type": "single",
@@ -750,6 +775,7 @@ window.SFA_DATA = Object.freeze({
       },
       {
         "id": "idtheft",
+        "chipLabel": "Signs of identity theft",
         "text": "Any signs of identity theft? Choose all that apply.",
         "whyWeAsk": "These signs point to loans or accounts opened in your name.",
         "type": "multi",
@@ -785,7 +811,7 @@ window.SFA_DATA = Object.freeze({
     ]
   },
   "steps": {
-    "catalogVersion": 9,
+    "catalogVersion": 14,
     "evidenceChecklist": {
       "title": "Your evidence folder",
       "intro": "Keep these in one folder. They back up every call you make.",
@@ -795,6 +821,80 @@ window.SFA_DATA = Object.freeze({
         "Keep receipts, screenshots, and mailing slips in one folder.",
         "Note each office you call, the date, and any case number.",
         "Keep the messages for now. They are proof of what happened."
+      ]
+    },
+    "helperLede": "Work top to bottom. Their money and accounts are theirs, so have them with you, in person or on the phone, for the calls. You can help with reports and records.",
+    "helperWords": {
+      "title": "Words for the conversation",
+      "intro": "Not sure how to start with them? These lines come from our family playbook.",
+      "jumpLabel": "Jump to the words for the conversation",
+      "linkLabel": "Open the full family playbook",
+      "linkNote": "It opens with the lines that fit where you are now. Nothing you answered is sent anywhere.",
+      "cases": {
+        "lost": {
+          "scenario": "after-loss",
+          "lines": 2
+        },
+        "ongoing": {
+          "scenario": "mid-scam",
+          "lines": 2
+        }
+      }
+    },
+    "helperLabels": {
+      "say": "You say (the helper)",
+      "withThem": "If they are with you or on the call",
+      "cannotJoin": "If they cannot join right now"
+    },
+    "helperCard": {
+      "title": "What you can do for them today",
+      "foldTitle": "If you are helping someone else",
+      "intro": "You can do some things alone. Some things need your relative beside you, or legal papers.",
+      "items": [
+        {
+          "text": "You can report the scam for them at ReportFraud.ftc.gov. The form lets you say you are reporting for someone else.",
+          "source": {
+            "title": "FTC ReportFraud FAQ",
+            "url": "https://reportfraud.ftc.gov/faq",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "IC3.gov takes reports of cyber-enabled crime, which is crime that happened online or through the internet. You can report for someone else. Give your own contact details where the form asks.",
+          "source": {
+            "title": "IC3 FAQ",
+            "url": "https://www.ic3.gov/Home/FAQ",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "Is your relative 60 or older? You can call the elder fraud hotline for them. It is open Monday to Friday, 10 a.m. to 6 p.m. Eastern.",
+          "phoneAgency": "ovc-elder-hotline",
+          "source": {
+            "title": "National Elder Fraud Hotline",
+            "url": "https://ovc.ojp.gov/program/elder-fraud-abuse/national-elder-fraud-hotline",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "Our advice: their bank, credit files, and benefits belong to them. Plan to have them with you, in person or on the phone, for those calls.",
+          "ownAdvice": true
+        },
+        {
+          "text": "Do you hold legal papers to act for them? The CFPB guides explain the limits of those papers.",
+          "source": {
+            "title": "CFPB: Managing Someone Else's Money",
+            "url": "https://www.consumerfinance.gov/consumer-tools/managing-someone-elses-money/",
+            "reviewed": "2026-10"
+          }
+        }
+      ],
+      "directoryTitle": "More help for helpers",
+      "directory": [
+        "cfpb-msem",
+        "eldercare-locator",
+        "ovc-elder-hotline",
+        "doj-elderjustice"
       ]
     },
     "tiers": [
@@ -840,7 +940,7 @@ window.SFA_DATA = Object.freeze({
           "contact_unsure"
         ],
         "source": {
-          "title": "FINRA Foundation victim research via project discovery report",
+          "title": "Project research notes (not an agency page)",
           "url": "",
           "reviewed": "2026-08"
         }
@@ -850,8 +950,8 @@ window.SFA_DATA = Object.freeze({
         "tier": "now",
         "order": 2,
         "title": "Ask your bank to pull the wire back (a recall)",
-        "what": "Call your bank now. Ask for the fraud department. Speed matters most in the first 24 hours.",
-        "why": "Wires settle fast. The FBI team that freezes wires succeeded about two times out of three in 2024 when victims reported fast. Ask now, but no result is promised.",
+        "what": "Call your bank now. Ask for the fraud department. The quicker you act, the better your chance of getting your money back.",
+        "why": "Wires settle fast. The FBI's Recovery Asset Team can help ask banks to freeze money sent by wire. It helps most when you report as quickly as possible. No result is promised.",
         "say": [
           "\"I wired money to a scammer. This is fraud. Please ask the other bank to send the money back - start a recall right away.\""
         ],
@@ -881,13 +981,24 @@ window.SFA_DATA = Object.freeze({
         "say": [
           "\"Someone tricked me into sending money through this app. I want to report fraud and try to reverse the transfer.\""
         ],
+        "helper": {
+          "say": [
+            "\"I am helping my relative report a payment sent through this app. Please tell me what you need from them.\""
+          ],
+          "withThem": [
+            "\"My relative is with me now. Please talk to both of us.\""
+          ],
+          "cannotJoin": [
+            "\"I am helping my relative. They cannot join right now. What do you need to speak with me, or to speak with them later?\""
+          ]
+        },
         "links": [],
         "phones": [],
         "requireAny": [
           "money_app"
         ],
         "source": {
-          "title": "Project discovery report, section 10",
+          "title": "Project research notes (not an agency page)",
           "url": "",
           "reviewed": "2026-08"
         }
@@ -903,6 +1014,17 @@ window.SFA_DATA = Object.freeze({
           "\"Someone ran a scam and got my gift card numbers. Can you check the balance, freeze what is left, and refund me?\""
         ],
         "note": "Companies change their numbers. If a number here does not work, use the FTC page linked below or the number printed on your card.",
+        "helper": {
+          "say": [
+            "\"I am helping my relative report a gift card scam. Please tell me what you need from them.\""
+          ],
+          "withThem": [
+            "\"My relative is with me now. Please talk to both of us.\""
+          ],
+          "cannotJoin": [
+            "\"I am helping my relative. They cannot join right now. What do you need to speak with me, or to speak with them later?\""
+          ]
+        },
         "links": [
           {
             "agency": "ftc-giftcards"
@@ -944,6 +1066,17 @@ window.SFA_DATA = Object.freeze({
         "say": [
           "\"Someone scammed me. Please mark my account for fraud and review recent activity with me.\""
         ],
+        "helper": {
+          "say": [
+            "\"I am helping my relative report a scam on their account. Please tell me what you need from them.\""
+          ],
+          "withThem": [
+            "\"My relative is with me now. Please talk to both of us.\""
+          ],
+          "cannotJoin": [
+            "\"I am helping my relative. They cannot join right now. What do you need to speak with me, or to speak with them later?\""
+          ]
+        },
         "links": [],
         "phones": [],
         "requireAny": [
@@ -959,7 +1092,7 @@ window.SFA_DATA = Object.freeze({
           "id_charges"
         ],
         "source": {
-          "title": "Project discovery report, section 10",
+          "title": "Project research notes (not an agency page)",
           "url": "",
           "reviewed": "2026-08"
         }
@@ -982,7 +1115,7 @@ window.SFA_DATA = Object.freeze({
           "id_charges"
         ],
         "source": {
-          "title": "Project discovery report, section 10",
+          "title": "Project research notes (not an agency page)",
           "url": "",
           "reviewed": "2026-08"
         }
@@ -992,18 +1125,18 @@ window.SFA_DATA = Object.freeze({
         "tier": "now",
         "order": 7,
         "title": "Cut the scammer off from your device",
-        "what": "Turn off Wi-Fi or unplug the internet cable. Restart the device. Delete any app they told you to install. Run a full scan with trusted security software.",
+        "what": "Update your security software, then run a scan. Delete anything it finds as a problem.",
         "why": "Remote access tools let strangers read your email and reach your accounts.",
-        "note": "Still worried after the scan? Back up your files, then reset the device to factory settings.",
+        "note": "Need help with harmful software? Ask the maker of your device, a company you trust, or a friend who knows computers.",
         "links": [],
         "phones": [],
         "requireAny": [
           "device_remote"
         ],
         "source": {
-          "title": "Project discovery report, section 6",
-          "url": "",
-          "reviewed": "2026-08"
+          "title": "FTC: What To Do if You Were Scammed",
+          "url": "https://consumer.ftc.gov/articles/what-do-if-you-were-scammed",
+          "reviewed": "2026-10"
         }
       },
       {
@@ -1021,7 +1154,7 @@ window.SFA_DATA = Object.freeze({
           "device_remote"
         ],
         "source": {
-          "title": "Project discovery report, section 6",
+          "title": "Project research notes (not an agency page)",
           "url": "",
           "reviewed": "2026-08"
         }
@@ -1031,8 +1164,8 @@ window.SFA_DATA = Object.freeze({
         "tier": "now",
         "order": 9,
         "title": "Freeze your credit at all three bureaus",
-        "what": "A credit freeze is a free lock. It stops most new loans in your name. Place one with Equifax, Experian, and TransUnion. Each one takes minutes. It never hurts your credit score.",
-        "why": "Scammers with your Social Security number try to open loans. The lock stops most of them.",
+        "what": "A credit freeze is a free lock. While it is on, nobody can open a new credit account in your name. It does not affect your credit score. Place one with Equifax, Experian, and TransUnion.",
+        "why": "Scammers with your Social Security number try to open loans. The lock blocks new credit accounts in your name.",
         "say": [
           "To each bureau: \"I want to place a security freeze on my credit file.\""
         ],
@@ -1062,7 +1195,7 @@ window.SFA_DATA = Object.freeze({
         "tier": "now",
         "order": 10,
         "title": "Know what crypto recovery can and cannot do",
-        "what": "Crypto moves like cash. There is no chargeback, and no bank can pull the money back. Report fast to IC3 and your local FBI field office.",
+        "what": "Crypto moves like cash. There is no chargeback, and no bank can pull the money back. Report it to IC3.",
         "why": "Fast reporting may help freeze an account. Anyone offering to trace or recover your coins for a fee is selling a second scam.",
         "say": [
           "\"I paid cryptocurrency in a scam. Please record my report and tell me what I can do next.\""
@@ -1221,8 +1354,8 @@ window.SFA_DATA = Object.freeze({
         "tier": "week",
         "order": 1,
         "title": "Report internet crime to the FBI at IC3.gov",
-        "what": "Use IC3.gov for scams that ran online or by wire. Report wire fraud within 24 hours if you can.",
-        "why": "The FBI team that freezes wires succeeded about two times out of three in 2024 when victims reported fast. Fast reports give that team a chance to ask banks to freeze money.",
+        "what": "Use IC3.gov for scams that ran online or by wire. The quicker you report, the better your chance of getting your money back.",
+        "why": "The FBI's Recovery Asset Team can help ask banks to freeze money sent by wire. It helps most when you report as quickly as possible.",
         "links": [
           {
             "agency": "ic3"
@@ -1316,7 +1449,7 @@ window.SFA_DATA = Object.freeze({
         "tier": "week",
         "order": 5,
         "title": "Keep a paper trail with local police",
-        "what": "You can file a report at your local police station. Bring amounts, dates, names, and receipts. You do not need to name a suspect. It is worth doing for losses you might deduct, insure, or dispute. Some banks and insurers ask for the report number.",
+        "what": "You can file a report at your local police station. Bring amounts, dates, names, and receipts. You do not need to name a suspect. It is worth doing for losses you might deduct, insure, or dispute.",
         "why": "An official record helps with later disputes.",
         "note": "If anyone threatens you or shows up at your door, call 911 right away.",
         "links": [],
@@ -1335,7 +1468,7 @@ window.SFA_DATA = Object.freeze({
           "id_addresschange"
         ],
         "source": {
-          "title": "Project discovery report, section 10",
+          "title": "Project research notes (not an agency page)",
           "url": "",
           "reviewed": "2026-08"
         }
@@ -1344,9 +1477,9 @@ window.SFA_DATA = Object.freeze({
         "id": "credit-reports-weekly",
         "tier": "week",
         "order": 6,
-        "title": "Check your free weekly credit reports",
-        "what": "Check all three reports at AnnualCreditReport.com. The reports are permanently free every week. Call 1-877-322-8228 if the website is hard to use.",
-        "why": "Weekly checks can show new accounts or charges early.",
+        "title": "Check your free credit reports",
+        "what": "Check all three reports at AnnualCreditReport.com. The reports are free every week. Call 1-877-322-8228 if the website is hard to use. Reports requested by phone are mailed within 15 days.",
+        "why": "Checking your reports can show new accounts or charges early.",
         "links": [
           {
             "agency": "annualcreditreport"
@@ -1369,7 +1502,7 @@ window.SFA_DATA = Object.freeze({
         "source": {
           "title": "FTC: Free Credit Reports",
           "url": "https://consumer.ftc.gov/articles/free-credit-reports",
-          "reviewed": "2026-08"
+          "reviewed": "2026-10"
         }
       },
       {
@@ -1417,7 +1550,7 @@ window.SFA_DATA = Object.freeze({
         "tells you to stay on the phone while you buy",
         "asks for the numbers on the back of the card"
       ],
-      "explanation": "No real agency or business takes gift cards. Gift cards are like cash. Once you share the codes, the money is gone fast. That is why scammers want them.",
+      "explanation": "No real business or government agency will ever tell you to buy a gift card to pay them. Gift cards are like cash. Once you share the codes, the money is gone fast. That is why scammers want them.",
       "examples": [
         {
           "channel": "phone call",
@@ -1476,7 +1609,7 @@ window.SFA_DATA = Object.freeze({
     }
   ],
   "familyGuide": {
-    "guideVersion": 4,
+    "guideVersion": 6,
     "title": "Family playbook",
     "intro": "This playbook helps you talk with a family member about scams. It protects their dignity and their independence.",
     "relationships": [
@@ -1516,6 +1649,18 @@ window.SFA_DATA = Object.freeze({
       "grandparent": "\"Grandma, Grandpa - I saw a warning about a new phone trick going around. Even the sharpest people I know got a call like this. Have you?\"",
       "partner": "\"We are a team. Something is going around by phone and text, and I would rather look at it together than alone.\"",
       "relative": "\"I read about a scam making the rounds. You are good at spotting nonsense, so I wanted to swap notes with you.\""
+    },
+    "openersAfterLoss": {
+      "parent": "\"Mom, Dad - thank you for telling me. That took guts. This happens to smart people every day.\"",
+      "grandparent": "\"Grandma, Grandpa - thank you for telling me. That took guts. This happens to smart people every day.\"",
+      "partner": "\"Thank you for telling me. That took guts. We are a team, and this happens to smart people every day.\"",
+      "relative": "\"Thank you for telling me. That took guts. This happens to smart people every day.\""
+    },
+    "openersOngoing": {
+      "parent": "\"Mom, Dad - are you safe? Good. Hang up on them now. We will sort the rest out together.\"",
+      "grandparent": "\"Grandma, Grandpa - are you safe? Good. Hang up on them now. We will sort the rest out together.\"",
+      "partner": "\"Are you safe? Good. Hang up on them now. We will sort the rest out together.\"",
+      "relative": "\"Are you safe? Good. Hang up on them now. We will sort the rest out together.\""
     },
     "coreScript": {
       "normalize": [
@@ -1735,7 +1880,7 @@ window.SFA_DATA = Object.freeze({
         {
           "level": 5,
           "name": "Outside help",
-          "text": "Money still leaving, or contact will not stop? Ask Adult Protective Services for help. Call the Eldercare Locator to reach them.",
+          "text": "Money still leaving, or contact will not stop? Ask Adult Protective Services for help. Call the Eldercare Locator to find your state's reporting number.",
           "agency": "eldercare-locator"
         }
       ]
@@ -1744,7 +1889,7 @@ window.SFA_DATA = Object.freeze({
       "title": "When to bring in more help",
       "items": [
         {
-          "text": "Still in contact with scammers, or money keeps leaving? Call Adult Protective Services through the Eldercare Locator.",
+          "text": "Still in contact with scammers, or money keeps leaving? Call the Eldercare Locator to find your state's Adult Protective Services number.",
           "agency": "eldercare-locator"
         },
         {
@@ -1769,5 +1914,83 @@ window.SFA_DATA = Object.freeze({
       "lost": "Be gentle with each other today. When you are ready, the After-a-scam wizard builds the ordered recovery plan in about two minutes."
     },
     "reviewed": "2026-08"
+  },
+  "copy": {
+    "crisisBox": {
+      "copyVersion": 2,
+      "title": "Free help, any hour",
+      "items": [
+        {
+          "id": "overwhelmed",
+          "agency": "lifeline-988",
+          "sourceUrl": "https://988lifeline.org/",
+          "lead": "Feeling overwhelmed or hopeless?",
+          "parts": [
+            "Call or text ",
+            {
+              "slot": "tel"
+            },
+            " ",
+            {
+              "slot": "state"
+            },
+            ", or visit ",
+            {
+              "slot": "site"
+            },
+            "."
+          ]
+        },
+        {
+          "id": "older-adult",
+          "agency": "eldercare-locator",
+          "sourceUrl": "https://eldercare.acl.gov/",
+          "lead": "Worried about an older adult?",
+          "parts": [
+            "Call ",
+            {
+              "slot": "tel"
+            },
+            " ",
+            {
+              "slot": "state"
+            },
+            " for help near them, or visit ",
+            {
+              "slot": "site"
+            },
+            "."
+          ]
+        },
+        {
+          "id": "age-60",
+          "agency": "ovc-elder-hotline",
+          "sourceUrl": "https://ovc.ojp.gov/program/stop-elder-fraud/providing-help-restoring-hope",
+          "lead": "Age 60 or older and scammed?",
+          "parts": [
+            "A case manager helps you through the reporting process. Call ",
+            {
+              "slot": "tel"
+            },
+            {
+              "slot": "hours"
+            },
+            " ",
+            {
+              "slot": "state"
+            },
+            ", or visit ",
+            {
+              "slot": "site"
+            },
+            ".",
+            {
+              "slot": "warning"
+            }
+          ]
+        }
+      ],
+      "dangerLine": "Anyone in immediate danger? Call 911."
+    }
   }
 });

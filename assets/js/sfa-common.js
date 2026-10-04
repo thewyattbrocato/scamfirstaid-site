@@ -88,6 +88,34 @@
     return 'tel:+' + d;
   }
 
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  // Mirrors phoneStateText in tools/lib/common.mjs (the build uses that one).
+  function phoneStateText(record) {
+    var state = record && record.verifiedState;
+    if (state === 'verified') {
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(record.verifiedOn || '');
+      if (m) return 'Checked ' + MONTHS[Number(m[2]) - 1] + ' ' + Number(m[3]) + ', ' + m[1];
+    }
+    if (state === 'unverified') return 'Not verified.' + (record.verifiedNote ? ' ' + record.verifiedNote : '');
+    return 'Not checked';
+  }
+
+  function phoneStateNode(record) {
+    var span = document.createElement('span');
+    span.className = record && record.verifiedState === 'verified' ? 'phone-state' : 'phone-state phone-state-flag';
+    span.textContent = phoneStateText(record);
+    return span;
+  }
+
+  function findPhone(agency, digits) {
+    var list = (agency && agency.phones) || [];
+    for (var i = 0; i < list.length; i += 1) {
+      if (list[i].number === digits) return list[i];
+    }
+    return null;
+  }
+
   function isDangerCue(text) {
     return /\b911\b/.test(String(text || ''));
   }
@@ -99,6 +127,9 @@
     fault: fault,
     prettyPhone: prettyPhone,
     telHref: telHref,
+    phoneStateText: phoneStateText,
+    phoneStateNode: phoneStateNode,
+    findPhone: findPhone,
     isDangerCue: isDangerCue,
     liveId: LIVE_ID
   };
