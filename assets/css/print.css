@@ -1,5 +1,5 @@
 @page {
-  margin: 0.5in;
+  margin: 0.4in;
 }
 
 @page wallet {
@@ -8,14 +8,21 @@
 }
 
 body {
-  font-size: 11pt;
-  line-height: 1.4;
+  font-size: 9pt;
+  line-height: 1.25;
   color: #000;
   background: #fff;
 }
 
+/* Padding below the wallet-card page would otherwise print as a blank sheet. */
+main {
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+
 body.large-print {
-  font-size: 13pt;
+  font-size: 11.5pt;
 }
 
 [tabindex]:focus,
@@ -28,8 +35,13 @@ body.plan-shown #plan > .lede {
   display: none !important;
 }
 
+.plan-side,
 body.plan-shown #help-directory {
   display: none !important;
+}
+
+.plan-layout {
+  display: block !important;
 }
 
 .site-header,
@@ -57,6 +69,24 @@ body.plan-shown #help-directory {
   display: block !important;
 }
 
+/* Sources: one list on paper, so the per-block lines stay on screen only; the own-advice label stays. */
+.source-line,
+.helper-words .btn {
+  display: none !important;
+}
+.print-sources {
+  display: block !important;
+  margin: 6pt 0 0;
+  font-size: 8pt;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.print-sources h3 { font-size: 9.5pt; margin: 0 0 2pt; }
+.print-sources ul { margin: 0; padding-left: 12pt; columns: 2; column-gap: 14pt; }
+.print-sources li { break-inside: avoid; overflow-wrap: anywhere; }
+
+p, li { max-width: none; }
+
 a {
   color: #000;
   text-decoration: none;
@@ -71,9 +101,9 @@ a {
   margin: 0 0 2pt;
 }
 
-h1 { font-size: 18pt; }
-h2 { font-size: 15pt; }
-h3 { font-size: 13pt; }
+h1 { font-size: 16pt; }
+h2 { font-size: 13pt; }
+h3 { font-size: 11pt; }
 
 .plan-header {
   border-top: none;
@@ -96,24 +126,89 @@ h3 { font-size: 13pt; }
 
 .step-card,
 .crisis-box {
-  border: 1.5pt solid #000;
+  border: 1pt solid #000;
   border-radius: 0;
-  padding: 6pt 9pt;
-  margin: 5pt 0;
+  padding: 3pt 7pt;
+  margin: 3pt 0;
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 .evidence-box,
 .helper-words,
+.helper-denial,
 .wallet-card {
-  border: 1.5pt solid #000;
+  border: 1pt solid #000;
   border-radius: 0;
-  padding: 6pt 9pt;
-  margin: 5pt 0;
+  background: none !important;
+  padding: 3pt 7pt;
+  margin: 3pt 0;
   break-inside: avoid;
   page-break-inside: avoid;
 }
+
+.helper-card,
+.evidence-box,
+.helper-words,
+.crisis-box,
+.step-card {
+  background: none !important;
+}
+.helper-card {
+  border: 1pt solid #000;
+  border-radius: 0;
+  padding: 3pt 7pt;
+  margin: 3pt 0;
+}
+
+/* The plan flows in two columns so a letter side holds the steps and their phone numbers. */
+.plan-list-wrap {
+  columns: 2;
+  column-gap: 16pt;
+}
+.plan-list-wrap .plan-list { margin: 0; }
+
+/* Long blocks may break between their items; the items stay whole. */
+.helper-card,
+.evidence-box,
+.helper-words,
+.crisis-box,
+.step-card {
+  break-inside: auto;
+  page-break-inside: auto;
+}
+.helper-card li,
+.step-card .contacts,
+.step-card p,
+.step-card .contacts li,
+.evidence-box li,
+.crisis-box li,
+.say-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Screen cards use shadow edges; paper keeps plain black rules. */
+.step-card,
+.crisis-box,
+.evidence-box,
+.helper-words,
+.helper-denial,
+.letter-block,
+.fam-form,
+.practice-role,
+.footer-card {
+  box-shadow: none;
+}
+
+.say-block.say-mine {
+  background: #fff;
+  border-radius: 0;
+  border-left: 3pt solid #000;
+  padding: 4pt 7pt;
+}
+.say-block.say-mine .step-label { color: #000; }
+.say-block.say-mine blockquote { font-size: 10.5pt; font-weight: 700; }
 
 .letter-block,
 .ritual-strip,
@@ -170,6 +265,16 @@ h3 { font-size: 13pt; }
 
 .wallet-card li { margin-bottom: 1pt; }
 .wallet-card .phone-state { font-size: 6pt; }
+.wallet-card h3 { font-size: 9pt; margin: 0 0 2pt; }
+.wallet-card p { margin: 0 0 2pt; }
+.helper-card .helper-directory { font-size: 8pt; padding-left: 12pt; margin: 2pt 0; }
+.helper-card .helper-directory li { break-inside: avoid; margin-bottom: 2pt; }
+.evidence-box ul { margin: 2pt 0; padding-left: 12pt; }
+.evidence-box li { margin-bottom: 1pt; }
+.say-block.say-helper { border: 0; border-left: 3pt solid #000; }
+.step-note { margin: 2pt 0; }
+.helper-card p, .helper-card ul, .helper-card h4 { margin-top: 2pt; margin-bottom: 2pt; }
+.say-block p, .say-block blockquote { margin-top: 1pt; margin-bottom: 1pt; }
 
 .tier-heading {
   break-after: avoid;
@@ -186,9 +291,19 @@ h3 { font-size: 13pt; }
 }
 .say-block blockquote { font-size: 10.5pt; }
 
-.step-head h4 { font-size: 11.5pt; }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2pt 6pt; }
+.step-head h4,
+.step-number { font-size: 11.5pt; }
+.step-number { color: #000; }
 
-.badge { color: #000; }
+h4,
+.step-why,
+.own-advice,
+.footer-card h2 {
+  font-size: 1em;
+}
+
+.badge { color: #000; font-size: 8pt; }
 
 .contacts { margin: 2pt 0; }
 .contacts li { margin: 1pt 0; }

@@ -39,13 +39,17 @@
       }
       // The plan links here with only a scenario name in the URL fragment (#situation=lost).
       // It never holds answers or personal data, and it wins over the saved choice.
+      // #scenario=denial opens the playbook on the words for a relative who does not believe it.
       var carried = /^#situation=(lost|ongoing)$/.exec(window.location.hash || '');
       if (carried && hasOption(sitSel, carried[1])) situation = carried[1];
+      var carriedDenial = /^#scenario=denial$/.test(window.location.hash || '');
+      if (carriedDenial && hasOption(sitSel, 'ongoing')) situation = 'ongoing';
       relSel.value = relationship;
       sitSel.value = situation;
       populateScenarios(relationship);
       // Scenario and cadence choices stay ephemeral: they are never stored.
       scenSel.value = defaultScenario(situation);
+      if (carriedDenial && hasOption(scenSel, 'denial')) scenSel.value = 'denial';
       var cadence = defaultCadence();
       if (fields) fields.disabled = false;
 
@@ -73,16 +77,52 @@
         }
       });
 
+      // Clearing asks in the page, not with a browser pop-up. "Keep my choices" is the safe
+      // default: it takes focus, and Escape picks it.
       var resetBtn = form.querySelector('#fam-reset');
       if (resetBtn) {
+        var copy = window.SFA_DATA.copy.startOver.family;
+        resetBtn.textContent = copy.button;
+        resetBtn.setAttribute('aria-expanded', 'false');
+        resetBtn.setAttribute('aria-controls', 'fam-reset-confirm');
+        var ask = el('div', 'confirm');
+        ask.id = 'fam-reset-confirm';
+        ask.hidden = true;
+        ask.setAttribute('role', 'group');
+        ask.setAttribute('aria-label', copy.button);
+        ask.appendChild(el('p', null, copy.prompt));
+        var askRow = el('div', 'wiz-actions');
+        var keep = el('button', 'btn primary', copy.keep);
+        keep.type = 'button';
+        var go = el('button', 'btn', copy.confirm);
+        go.type = 'button';
+        askRow.appendChild(keep);
+        askRow.appendChild(go);
+        ask.appendChild(askRow);
+        resetBtn.parentNode.parentNode.appendChild(ask);
+
+        var closeAsk = function () {
+          ask.hidden = true;
+          resetBtn.setAttribute('aria-expanded', 'false');
+          resetBtn.focus();
+        };
         resetBtn.addEventListener('click', function () {
-          if (!window.confirm('Clear the family playbook choices stored on this device?')) return;
+          ask.hidden = false;
+          resetBtn.setAttribute('aria-expanded', 'true');
+          keep.focus();
+        });
+        keep.addEventListener('click', closeAsk);
+        ask.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') closeAsk();
+        });
+        go.addEventListener('click', function () {
           storage.clear();
           relSel.value = defaultRelationship;
           sitSel.value = defaultSituation;
           populateScenarios(defaultRelationship);
           scenSel.value = defaultScenario(defaultSituation);
           render(defaultRelationship, defaultSituation, scenSel.value, defaultCadence());
+          closeAsk();
         });
       }
 
@@ -141,8 +181,9 @@
         return checked ? checked.value : cadence;
       }
 
-      function openerText(relationshipId, situationId) {
+      function openerText(relationshipId, situationId, scenarioId) {
         var set = guide.openers;
+        if (scenarioId === 'denial' && guide.openersDenial) return guide.openersDenial[relationshipId] || guide.openersDenial.relative;
         if (situationId === 'lost' && guide.openersAfterLoss) set = guide.openersAfterLoss;
         if (situationId === 'ongoing' && guide.openersOngoing) set = guide.openersOngoing;
         return set[relationshipId] || set.relative;
@@ -296,7 +337,10 @@
         out.hidden = false;
         out.appendChild(el('h2', null, 'Your family playbook')).id = 'fp-title';
 
-        if (situationId === 'ongoing' && guide.urgentNote.ongoing) {
+        var denial = scenario && scenario.id === 'denial' && guide.urgentNote.denial;
+        if (denial) {
+          out.appendChild(callout(guide.urgentNote.denial));
+        } else if (situationId === 'ongoing' && guide.urgentNote.ongoing) {
           out.appendChild(callout(guide.urgentNote.ongoing));
         }
         if (situationId === 'lost' && guide.urgentNote.lost) {
@@ -305,7 +349,7 @@
 
         var openSec = el('section');
         openSec.appendChild(el('h3', null, 'Open the conversation'));
-        var opener = sayGroup([openerText(relationshipId, situationId)]);
+        var opener = sayGroup([openerText(relationshipId, situationId, scenario && scenario.id)]);
         openSec.appendChild(opener);
         openSec.appendChild(el('p', null, guide.intro));
         out.appendChild(openSec);
@@ -469,13 +513,13 @@
         escSec.appendChild(escUl);
         out.appendChild(escSec);
 
-        out.appendChild(walletCard());
-
         out.appendChild((function () {
           var p = el('p', 'privacy-print-note');
           p.textContent = 'Printed from Scam First Aid. Nothing you chose was sent anywhere. This guide is general information, not legal or financial advice.';
           return p;
         })());
+
+        out.appendChild(walletCard());
 
         window.SFA.announce('Your family playbook is ready below. You can print it.');
       }

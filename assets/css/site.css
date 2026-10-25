@@ -12,6 +12,34 @@
   --urgent: #8a4500;
   --today-badge-bg: #7a4d00;
   --danger: #a11229;
+
+  /* Five text sizes (1rem = 18px). 16px is the floor. */
+  --t-small: 0.889rem; /* 16px: meta, sources, chips, badges */
+  --t-body: 1rem; /* 18px */
+  --t-lead: 1.167rem; /* 21px: step titles, the words to say */
+  --t-h2: 1.5rem; /* 27px: section and question titles */
+  --t-h1: 2rem; /* 36px: page titles */
+
+  /* One box level: a soft shadow edge instead of a heavy frame. */
+  --card-edge: 0 0 0 1px rgba(33, 49, 60, 0.6), 0 2px 6px rgba(33, 49, 60, 0.12);
+  --control-edge: 0 0 0 2px var(--line), 0 1px 3px rgba(33, 49, 60, 0.12);
+  --card-radius: 14px;
+}
+
+/* Stored reading font: local files only, no font service. Licence: LICENSE-FONT. */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("../fonts/atkinson-hyperlegible-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("../fonts/atkinson-hyperlegible-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 * { box-sizing: border-box; }
@@ -25,25 +53,44 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Source Sans 3", "Source Sans Pro", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: "Atkinson Hyperlegible", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: var(--t-body);
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 body.large-print {
-  font-size: 133%;
+  --t-small: 1.185rem;
+  --t-body: 1.333rem;
+  --t-lead: 1.556rem;
+  --t-h2: 2rem;
+  --t-h1: 2.667rem;
 }
 
 p, li, dd { max-width: 46rem; }
 
-h1, h2, h3 { line-height: 1.2; max-width: 40rem; }
+h1, h2, h3, h4 { line-height: 1.2; max-width: 40rem; }
+h1 { font-size: var(--t-h1); }
+h2 { font-size: var(--t-h2); }
+h3 { font-size: var(--t-lead); }
+h4 { font-size: var(--t-body); }
 
-a { color: var(--link); }
+a { color: var(--link); overflow-wrap: anywhere; }
 a:visited { color: var(--link-visited); }
 
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
   outline: 4px solid var(--focus);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* Headings the page moves focus to (tabindex="-1"): a quiet underline, still 3:1 or better. */
+[tabindex="-1"]:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: var(--focus);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 0.3em;
 }
 
 .skip {
@@ -78,7 +125,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .brand {
   margin: 0;
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: var(--t-lead);
 }
 .brand-link {
   display: inline-flex;
@@ -120,7 +167,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   border-bottom: 2px solid var(--line);
   border-left: 8px solid var(--danger);
   padding: 0.65rem 1rem;
-  font-size: 0.95rem;
+  font-size: 0.95rem; /* the one off-scale size: the captain asked to keep this banner exactly as it was */
 }
 .banner-warning p { margin: 0 auto; max-width: 60rem; }
 .banner-short { display: none; }
@@ -131,13 +178,10 @@ main {
   margin: 0 auto;
 }
 
-.lede { font-size: 1.15rem; }
+.lede { font-size: var(--t-lead); }
 
 .hero {
-  background: var(--calm-soft);
-  border: 2px solid var(--line);
-  border-radius: 20px;
-  padding: 1.5rem;
+  padding: 1rem 0;
   margin: 0 0 1.5rem;
   display: grid;
   gap: 1rem;
@@ -145,7 +189,7 @@ main {
 }
 .hero h1 {
   margin: 0 0 0.4rem;
-  font-size: 1.9rem;
+  font-size: var(--t-h1);
   letter-spacing: -0.01em;
 }
 .hero .lede { margin: 0; }
@@ -157,7 +201,7 @@ main {
 }
 
 @media (min-width: 48rem) {
-  .hero { grid-template-columns: 1.2fr 1fr; padding: 1.25rem 1.75rem; }
+  .hero { grid-template-columns: 1.2fr 1fr; padding: 1rem 0; }
   .hero-art { max-width: 14rem; }
 }
 
@@ -180,9 +224,10 @@ main {
   }
   .banner-short[open] summary::after { content: "Show less"; }
   .hero-art { display: none; }
+  .site-header { padding: 0.25rem 1rem; gap: 0 1.5rem; }
   main { padding-top: 0.75rem; }
-  .hero { padding: 1rem; margin-bottom: 1rem; }
-  .hero h1 { font-size: 1.55rem; }
+  .hero { padding: 0.5rem 0; margin-bottom: 0.75rem; }
+  .hero h1 { font-size: var(--t-h2); }
   main.home {
     display: flex;
     flex-direction: column;
@@ -197,20 +242,24 @@ main {
     clip: rect(0 0 0 0);
     white-space: nowrap;
   }
-  body.plan-helper .plan-header h2 { font-size: 1.35rem; }
-  body.plan-helper #plan > .lede { font-size: 1rem; margin: 0.5rem 0; }
-  body.plan-helper .helper-jump { font-size: 0.95rem; margin: 0; }
+  body.plan-helper .plan-header h2 { font-size: var(--t-lead); }
+  body.plan-helper #plan > .lede { font-size: var(--t-body); margin: 0.5rem 0; }
+  body.plan-helper .helper-jump { font-size: var(--t-small); margin: 0; }
   body.plan-helper .plan-header { margin-top: 1rem; padding-top: 0.75rem; }
-  body.plan-helper .plan-actions { flex-wrap: nowrap; gap: 0.35rem; }
-  body.plan-helper .plan-actions .btn { padding: 0.5rem 0.6rem; font-size: 0.85rem; min-height: 44px; }
+  body.plan-helper .plan-header .plan-actions { flex-wrap: nowrap; gap: 0.35rem; }
+  body.plan-helper .plan-header .plan-actions .btn { padding: 0.5rem 0.6rem; font-size: var(--t-small); min-height: 44px; }
   body.plan-helper .plan-date { margin-top: 0.15rem; }
   body.plan-helper .tier-heading { margin-top: 0.75rem; }
+}
+
+@media (max-width: 15rem) {
+  body.plan-helper .plan-actions { flex-wrap: wrap; }
 }
 
 .doors {
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   margin: 0 0 2rem;
   padding: 0;
   list-style: none;
@@ -221,11 +270,8 @@ main {
   grid-template-columns: minmax(0, 1fr) minmax(18rem, 1.25fr);
   gap: 1.25rem;
   align-items: center;
-  padding: 1.25rem;
+  padding: 0;
   margin: 0 0 2rem;
-  background: var(--calm-soft);
-  border: 2px solid var(--line);
-  border-radius: 18px;
 }
 .how-section h2 { margin-top: 0; }
 .how-section p { margin-top: 0; }
@@ -236,8 +282,8 @@ main {
 }
 
 .door {
-  border: 3px solid var(--ink);
-  border-radius: 18px;
+  box-shadow: var(--control-edge);
+  border-radius: var(--card-radius);
   padding: 1.25rem 1.4rem 1.15rem;
   display: flex;
   flex-direction: column;
@@ -252,7 +298,7 @@ main {
 .door:hover {
   background: var(--soft);
   transform: translateY(-2px);
-  box-shadow: 0 4px 0 rgba(33, 49, 60, 0.25);
+  box-shadow: var(--control-edge), 0 4px 8px rgba(33, 49, 60, 0.18);
 }
 .door-icon {
   width: 52px;
@@ -260,7 +306,7 @@ main {
 }
 .door-eyebrow {
   align-self: flex-start;
-  font-size: 0.85rem;
+  font-size: var(--t-small);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -269,7 +315,8 @@ main {
   border-radius: 999px;
   padding: 0.2rem 0.75rem;
 }
-.door h2 { margin: 0; font-size: 1.45rem; }
+.door { min-width: 0; overflow-wrap: anywhere; }
+.door h2 { margin: 0; font-size: var(--t-h2); }
 .door p { margin: 0; }
 .door-cta {
   margin-top: auto;
@@ -281,17 +328,15 @@ main {
 .how-list li { margin-bottom: 0.75rem; }
 
 .privacy-box {
-  border: 2px solid var(--calm);
-  border-radius: 14px;
-  background: var(--calm-soft);
-  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--calm);
+  padding: 0.25rem 0 0.25rem 1.1rem;
   margin: 2rem 0;
 }
 .privacy-box h2 { margin-top: 0; }
 
 .crisis-box {
-  border: 3px solid var(--ink);
-  border-radius: 12px;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
   padding: 1.25rem 1.5rem;
   margin: 2rem 0 0;
 }
@@ -304,13 +349,24 @@ main {
 }
 .danger-line a, .danger-note a { color: inherit; }
 
+.wiz-progress-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.1rem 0.75rem;
+  margin: 0.5rem 0 0;
+}
 .wiz-progress {
   font-weight: 700;
-  margin: 1rem 0 0.25rem;
+  font-size: var(--t-small);
+  margin: 0;
 }
 
 .wiz-reassure {
-  margin: 0.25rem 0 0.75rem;
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.4;
   color: var(--line);
 }
 
@@ -319,6 +375,7 @@ main {
   border: 2px solid var(--ink);
   border-radius: 999px;
   overflow: hidden;
+  flex: 1 1 8rem;
   max-width: 24rem;
   background: var(--paper);
 }
@@ -331,23 +388,32 @@ main {
 }
 
 .qcard {
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-top: 1rem;
+  border: 0;
+  padding: 0;
+  margin: 1rem 0 0;
+  min-width: 0;
   max-width: 42rem;
-  background: var(--paper);
 }
-.qcard legend {
+.qcard-title {
+  font-size: var(--t-h2);
   font-weight: 700;
-  font-size: 1.2rem;
-  padding: 0 0.25rem;
+  line-height: 1.2;
+  margin: 0 0 0.35rem;
 }
 .qcard .why {
   margin: 0 0 1rem;
+  font-size: var(--t-small);
   color: var(--ink);
 }
-.qcard fieldset { border: none; margin: 0; padding: 0; }
+
+@media (max-width: 480px) {
+  .qcard { padding: 0.6rem 0 0.75rem; margin-top: 0.4rem; }
+  .qcard .why { font-size: var(--t-small); line-height: 1.4; margin-bottom: 0.75rem; }
+}
+
+/* Question screens: the page title and intro stay, small, above the progress. */
+body:not(.plan-shown) .page-intro h1 { font-size: var(--t-lead); margin: 0 0 0.2rem; }
+body:not(.plan-shown) .page-intro .lede { font-size: var(--t-small); line-height: 1.4; margin: 0; }
 
 .choices {
   display: grid;
@@ -366,7 +432,8 @@ main {
   text-align: left;
   font: inherit;
   padding: 0.85rem 1rem;
-  border: 2px solid var(--ink);
+  border: 0;
+  box-shadow: var(--control-edge);
   border-radius: 12px;
   background: var(--paper);
   cursor: pointer;
@@ -418,11 +485,11 @@ button.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
 }
 .plan-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .plan-date { margin: 0.35rem 0 0; color: var(--line); }
-.plan-print-brand, .privacy-print-note { display: none; }
+.plan-print-brand, .privacy-print-note, .print-sources { display: none; }
 
 .tier-heading {
   margin: 1.75rem 0 0.5rem;
-  font-size: 1.15rem;
+  font-size: var(--t-lead);
   letter-spacing: 0.02em;
 }
 
@@ -432,28 +499,39 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   list-style: none;
 }
 
+/* One box level. Wide screens: a soft card. Phones: a top rule and space, no frame. */
 .step-card {
-  border: 2px solid var(--ink);
-  border-radius: 16px;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
   padding: 1.25rem 1.4rem;
   margin: 1rem 0;
   break-inside: avoid;
 }
+@media (max-width: 40rem) {
+  .step-card {
+    box-shadow: none;
+    border-radius: 0;
+    border-top: 2px solid var(--line);
+    padding: 1rem 0 0.25rem;
+    margin: 1.25rem 0;
+  }
+}
 .step-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.2rem 0.5rem;
   align-items: baseline;
 }
+.step-head .badge { grid-column: 2; justify-self: start; }
 .step-number {
   font-weight: 700;
   color: var(--calm-dark);
-  font-size: 1.15rem;
+  font-size: var(--t-lead);
 }
-.step-head h4 { margin: 0; }
+.step-head h4 { margin: 0; font-size: var(--t-lead); }
 
 .badge {
-  font-size: 0.85rem;
+  font-size: var(--t-small);
   font-weight: 700;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
@@ -466,22 +544,30 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 
 .step-label { font-weight: 700; }
 
+/* Words to say: a plain left rule. The helper's own words are the one tinted, larger block. */
 .say-block {
-  background: var(--soft);
-  border-left: 6px solid var(--calm);
-  padding: 0.85rem 1.1rem;
+  border-left: 4px solid var(--calm);
+  padding: 0.1rem 0 0.1rem 0.9rem;
   margin: 0.75rem 0;
-  border-radius: 0 10px 10px 0;
 }
-.say-block p { margin: 0 0 0.5rem; }
-.say-block blockquote {
-  margin: 0;
-  font-size: 1.05rem;
+.say-block p { margin: 0 0 0.35rem; }
+.say-block blockquote { margin: 0; }
+.say-block.say-mine {
+  background: var(--calm-soft);
+  border-left: 6px solid var(--calm-dark);
+  border-radius: 0 12px 12px 0;
+  padding: 0.75rem 1rem;
+}
+.say-block.say-mine .step-label { color: var(--calm-dark); }
+.say-block.say-mine blockquote {
+  font-size: var(--t-lead);
+  font-weight: 700;
 }
 
 .copy-btn {
   font: inherit;
-  font-size: 0.95rem;
+  margin-top: 0.35rem;
+  font-size: var(--t-small);
   min-height: 52px;
   padding: 0.35rem 0.9rem;
   border-radius: 10px;
@@ -501,12 +587,12 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 .contacts li { margin: 0.35rem 0; }
 .phone-link {
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: var(--t-lead);
 }
 
 .phone-state {
   display: inline-block;
-  font-size: 0.8rem;
+  font-size: var(--t-small);
   font-weight: 400;
   color: var(--line);
   border: 1px solid var(--line);
@@ -522,11 +608,13 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   border-radius: 0.4em;
 }
 
+.step-why { font-size: var(--t-small); }
 .source-line {
-  font-size: 0.9rem;
+  font-size: var(--t-small);
   color: var(--line);
   margin: 0.75rem 0 0;
 }
+.own-advice { display: block; font-size: var(--t-small); font-style: italic; color: var(--line); }
 .source-line a { color: var(--link); }
 
 .done-box {
@@ -550,27 +638,32 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   margin: 1rem 0;
 }
 .chip {
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.3rem 0.8rem;
   background: var(--soft);
 }
 
 .fam-form {
-  border: 2px solid var(--ink);
-  border-radius: 16px;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
   padding: 1.5rem;
   margin: 1rem 0;
   max-width: 34rem;
   background: var(--paper);
 }
+.fam-form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 .fam-form label {
   display: block;
   font-weight: 700;
   margin-bottom: 0.3rem;
 }
+.fam-form fieldset { min-width: 0; }
 .fam-form select {
   font: inherit;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   min-height: 52px;
   padding: 0.5rem;
   border: 2px solid var(--ink);
@@ -616,13 +709,14 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   padding: 0.6rem 0.75rem;
   text-align: left;
   vertical-align: top;
+  overflow-wrap: anywhere;
 }
 
 .script-lines { padding-left: 1.25rem; }
 .script-lines li { margin-bottom: 0.6rem; }
 
 .agreement-lines { padding-left: 1.25rem; }
-.agreement-lines li { margin-bottom: 0.6rem; }
+.agreement-lines li { margin-bottom: 0.6rem; overflow-wrap: anywhere; }
 
 .print-only { display: none; }
 
@@ -647,16 +741,15 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   .practice-roles { grid-template-columns: 1fr 1fr; }
 }
 .practice-role {
-  border: 2px solid var(--line);
-  border-radius: 12px;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
   padding: 0.75rem 1rem;
-  background: var(--soft);
 }
 .practice-role h4 { margin: 0 0 0.35rem; }
 
 .letter-block {
-  border: 2px solid var(--ink);
-  border-radius: 14px;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
   padding: 1rem 1.25rem;
   margin: 1rem 0;
 }
@@ -664,8 +757,9 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 .letter-body p { margin: 0.5rem 0; }
 
 .ritual-picker {
-  border: 2px solid var(--ink);
-  border-radius: 12px;
+  border: 0;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
   padding: 0.75rem 1rem;
   margin: 0.75rem 0;
   max-width: 34rem;
@@ -686,7 +780,7 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 .site-footer {
   border-top: 3px solid var(--ink);
   padding: 1.5rem 1rem 2.75rem;
-  font-size: 0.95rem;
+  font-size: var(--t-small);
   background: var(--soft);
 }
 .site-footer p { max-width: 60rem; }
@@ -694,10 +788,10 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   max-width: 60rem;
   margin: 1rem 0;
   padding: 0.75rem 1rem;
-  border: 2px solid var(--line);
-  border-radius: 12px;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
 }
-.footer-card h2 { margin: 0 0 0.35rem; font-size: 1.1rem; }
+.footer-card h2 { margin: 0 0 0.35rem; font-size: var(--t-body); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -705,9 +799,9 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 }
 
 .help-directory {
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  padding: 1rem 1.25rem;
+  box-shadow: var(--card-edge);
+  border-radius: var(--card-radius);
+  padding: 0.25rem 1.25rem 1rem;
   margin: 1rem 0 2rem;
   background: var(--paper);
 }
@@ -716,22 +810,23 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   align-items: center;
   min-height: 52px;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: var(--t-body);
   cursor: pointer;
 }
 .directory-list {
   list-style: none;
   padding: 0;
-  margin: 1rem 0 0;
+  margin: 0.5rem 0 0;
   display: grid;
   gap: 0.85rem;
 }
 .dir-row {
-  border: 2px solid var(--line);
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  background: var(--soft);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  border-top: 1px solid var(--line);
+  padding: 0.75rem 0 0;
 }
+.dir-row:first-child { border-top: 0; padding-top: 0; }
 .dir-head {
   margin: 0 0 0.25rem;
   display: flex;
@@ -740,54 +835,87 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   gap: 0.5rem;
 }
 .dir-chip {
-  font-size: 0.85rem;
+  font-size: var(--t-small);
   font-weight: 700;
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.15rem 0.7rem;
   background: var(--paper);
 }
 .dir-for { margin: 0 0 0.35rem; }
-.dir-meta { margin: 0; font-size: 0.9rem; }
+.dir-warn { margin: 0 0 0.35rem; font-size: var(--t-small); }
+/* Row slots, always in this order: name, what it is for, call buttons with their check state under
+   each number, links, reviewed date. Decision 32 still scans every phone link for its state. */
+.dir-calls, .dir-links {
+  list-style: none;
+  margin: 0.25rem 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+}
+.dir-calls li {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 0.2rem;
+  max-width: 100%;
+}
+.dir-calls .phone-state { margin: 0; max-width: 100%; }
+.dir-call-label { font-size: var(--t-small); }
+a.call-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0.4rem 1rem;
+  border: 2px solid var(--calm-dark);
+  border-radius: 12px;
+  background: var(--paper);
+  text-decoration: none;
+}
+.dir-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+}
+.dir-meta { margin: 0; font-size: var(--t-small); }
 .dir-reviewed { color: var(--line); }
 
 .evidence-box {
-  border: 2px solid var(--calm-dark);
-  border-radius: 14px;
-  background: var(--calm-soft);
-  padding: 1rem 1.25rem;
-  margin: 1rem 0;
+  border-left: 4px solid var(--calm);
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  margin: 1.25rem 0;
 }
 .evidence-box h3 { margin-top: 0; }
 .evidence-box ul { padding-left: 1.25rem; margin-bottom: 0; }
 .evidence-box li { margin-bottom: 0.4rem; }
 
 .helper-card {
-  border: 2px solid var(--calm-dark);
-  border-radius: 14px;
-  background: var(--calm-soft);
-  padding: 1rem 1.25rem;
-  margin: 1rem 0;
+  border-left: 4px solid var(--calm);
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  margin: 1.25rem 0;
   overflow-wrap: anywhere;
 }
 .helper-card h3 { margin-top: 0; }
 .helper-card ul { padding-left: 1.25rem; margin-bottom: 0; }
 .helper-card li { margin-bottom: 0.5rem; }
 .helper-card summary { font-weight: 700; cursor: pointer; min-height: 2.75rem; }
-.helper-card .source-line { display: block; font-size: 0.9rem; }
+.helper-card .source-line { display: block; }
 .helper-dir-title { margin: 1rem 0 0.4rem; }
-.helper-jump { margin: 0.25rem 0 0; font-size: 1rem; }
-.helper-words {
-  border: 2px solid var(--calm-dark);
-  border-radius: 14px;
-  background: var(--calm-soft);
-  padding: 1rem 1.25rem;
-  margin: 1rem 0;
+.helper-jump { margin: 0.25rem 0 0; font-size: var(--t-body); }
+.helper-words,
+.helper-denial {
+  border-left: 4px solid var(--calm);
+  padding: 0.25rem 0 0.25rem 1.1rem;
+  margin: 1.25rem 0;
   overflow-wrap: anywhere;
 }
-.helper-words h3 { margin-top: 0; }
+.helper-words h3,
+.helper-denial h3 { margin-top: 0; }
 .helper-words .step-note { margin-bottom: 0; }
-.say-helper { border-style: dashed; }
+.helper-denial ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+.helper-denial li { margin-bottom: 0.5rem; }
+.helper-denial .source-line { display: block; }
 
 .wallet-card {
   border: 2px dashed var(--ink);
@@ -797,7 +925,7 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
   max-width: 3.5in;
   background: var(--paper);
 }
-.wallet-card h3 { margin-top: 0; font-size: 1rem; }
+.wallet-card h3 { margin-top: 0; font-size: var(--t-body); }
 .wallet-card p { margin: 0.3rem 0; }
 .wallet-card ul { padding-left: 1.25rem; margin-bottom: 0; }
 .wallet-card li { margin-bottom: 0.3rem; }
@@ -809,3 +937,49 @@ ol.plan-list { list-style: none; margin: 0; padding: 0; }
 @media (max-width: 47.99rem) {
   .how-section { grid-template-columns: 1fr; }
 }
+
+/* ---------- Side column: who to call, and what you say (helper plan, 64rem and wider) ---------- */
+.plan-side { display: none; }
+@media (min-width: 64rem) {
+  body.plan-helper .plan-layout:has(> .plan-side:not([hidden])) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: 2rem;
+    align-items: start;
+  }
+  body.plan-helper .plan-side:not([hidden]) {
+    display: block;
+    position: sticky;
+    top: 1rem;
+    margin-top: 2.5rem;
+    border-left: 4px solid var(--calm);
+    padding: 0.25rem 0 0.25rem 1.1rem;
+  }
+  .plan-side h3 { font-size: var(--t-lead); margin: 0 0 0.5rem; }
+  .plan-side h4 { font-size: var(--t-body); margin: 0.75rem 0 0.35rem; color: var(--calm-dark); }
+  .plan-side .contacts li { margin: 0.5rem 0; }
+  .plan-side .phone-state { display: block; margin: 0.2rem 0 0; }
+  .plan-side .say-block blockquote { font-size: var(--t-body); }
+}
+
+@media (forced-colors: active) {
+  .door, .choice, .crisis-box, .fam-form, .practice-role, .letter-block, .ritual-picker, .footer-card, .help-directory {
+    border: 2px solid CanvasText;
+  }
+}
+@media (forced-colors: active) and (min-width: 40.01rem) {
+  .step-card { border: 2px solid CanvasText; }
+}
+
+/* End of the plan: Start over asks in the page; "Keep my plan" is the safe choice. */
+.plan-end { margin: 1.5rem 0 0; }
+.confirm {
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  max-width: 32rem;
+  background: var(--paper);
+}
+.confirm[hidden] { display: none; }
+.confirm p { margin: 0 0 0.5rem; }

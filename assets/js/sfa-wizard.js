@@ -32,6 +32,10 @@
         questionIndex[q.id] = i;
       });
 
+      var sideRoot = document.getElementById('plan-side');
+      var sideSteps = [];
+      var sideCurrentId = null;
+
       var storage = window.SFA.store(STORE_KEY);
       var dataVersion = 'flow' + flow.version + '.steps' + stepsCatalog.catalogVersion;
       var state = null;
@@ -158,15 +162,15 @@
         var wrap = el('div');
         wrap.appendChild(buildProgress(q));
 
-        var box = document.createElement('fieldset');
-        box.className = 'qcard';
+        // A heading plus a labelled group: the question is a real heading, not a legend wrapper.
+        var box = el('div', 'qcard');
+        box.setAttribute('role', 'group');
+        box.setAttribute('aria-labelledby', 'q-' + q.id + '-text');
 
-        var legend = document.createElement('legend');
-        var title = el('p', 'qcard-title', q.text);
+        var title = el('h3', 'qcard-title', q.text);
         title.id = 'q-' + q.id + '-text';
         title.setAttribute('tabindex', '-1');
-        legend.appendChild(title);
-        box.appendChild(legend);
+        box.appendChild(title);
 
         var why = el('p', 'why', 'Why we ask: ' + q.whyWeAsk);
         box.appendChild(why);
@@ -276,7 +280,7 @@
         return block;
       }
 
-      function contactList(step) {
+      function contactList(step, phonesOnly) {
         var list = el('ul', 'contacts');
         (step.phones || []).forEach(function (p) {
           var li = el('li');
@@ -289,7 +293,7 @@
           li.appendChild(window.SFA.phoneStateNode(window.SFA.findPhone(p.agency ? agenciesById[p.agency] : null, p.phone)));
           list.appendChild(li);
         });
-        (step.links || []).forEach(function (l) {
+        (phonesOnly ? [] : step.links || []).forEach(function (l) {
           var agency = l.agency ? agenciesById[l.agency] : null;
           var targets = agency ? agency.urls : [{ label: l.label, url: l.url }];
           (targets || []).forEach(function (u) {
@@ -387,7 +391,7 @@
             return null;
           }));
         });
-        ul.appendChild(el('li', 'danger-line', copy.dangerLine));
+        ul.appendChild(el('li', 'danger-line', copy.dangerLine.text));
         box.appendChild(ul);
         return box;
       }
@@ -396,6 +400,32 @@
         var p = el('p', 'privacy-print-note');
         p.textContent = 'Printed from Scam First Aid. Nothing you typed was sent anywhere. This guide is general information, not legal or financial advice.';
         return p;
+      }
+
+      // Paper shows each source once, in one list; screen keeps the per-block lines (print.css hides them).
+      function printSources(root) {
+        var seen = {};
+        var list = el('ul');
+        root.querySelectorAll('.source-line').forEach(function (line) {
+          var stamp = line.textContent.match(/·\s*(reviewed\s+\S+)\s*$/);
+          var links = Array.prototype.slice.call(line.querySelectorAll('a'));
+          var entries = links.length
+            ? links.map(function (a) { return { a: a, label: a.textContent }; })
+            : [{ a: null, label: line.textContent.replace(/^Source:\s*/, '').replace(/\s*·.*$/, '') }];
+          entries.forEach(function (e) {
+            var key = (e.a ? e.a.href : '') + '|' + e.label + '|' + (stamp ? stamp[1] : '');
+            if (!e.label || seen[key]) return;
+            seen[key] = true;
+            var li = el('li', null, stamp ? e.label + ' · ' + stamp[1] : e.label);
+            if (e.a) li.appendChild(document.createTextNode(' (' + e.a.href + ')'));
+            list.appendChild(li);
+          });
+        });
+        if (!list.children.length) return null;
+        var box = el('section', 'print-sources');
+        box.appendChild(el('h3', null, stepsCatalog.printSources.title));
+        box.appendChild(list);
+        return box;
       }
 
       function evidenceBox() {
@@ -415,6 +445,48 @@
         return sec;
       }
 
+      // Sources show once per block, small, after the list; own-advice items keep their honest tag.
+      function sourcedItem(item, sources) {
+        var li = el('li');
+        li.appendChild(el('span', null, item.text));
+        li.appendChild(document.createTextNode(' '));
+        if (item.phoneAgency && agenciesById[item.phoneAgency]) {
+          (agenciesById[item.phoneAgency].phones || []).forEach(function (p) {
+            li.appendChild(document.createTextNode(' '));
+            var t = document.createElement('a');
+            t.className = 'phone-link';
+            t.href = window.SFA.telHref(p.number);
+            t.textContent = window.SFA.prettyPhone(p.number);
+            li.appendChild(t);
+            li.appendChild(document.createTextNode(' '));
+            li.appendChild(window.SFA.phoneStateNode(p));
+          });
+        }
+        if (item.source) {
+          var seen = sources.some(function (s) { return s.url === item.source.url; });
+          if (!seen) sources.push(item.source);
+        } else {
+          li.appendChild(el('span', 'own-advice', 'Our own advice, not from an agency.'));
+        }
+        return li;
+      }
+
+      function blockSources(sources) {
+        if (!sources.length) return null;
+        var p = el('p', 'source-line');
+        p.appendChild(document.createTextNode(sources.length > 1 ? 'Sources: ' : 'Source: '));
+        sources.forEach(function (src, i) {
+          if (i) p.appendChild(document.createTextNode(' · '));
+          var a = document.createElement('a');
+          a.href = src.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = src.title;
+          p.appendChild(a);
+        });
+        return p;
+      }
+
       function helperCardEl(collapsed) {
         var block = stepsCatalog.helperCard;
         if (!block || !block.items) return null;
@@ -431,39 +503,13 @@
         }
         body.appendChild(el('p', null, block.intro));
         var ul = el('ul', 'helper-items');
+        var sources = [];
         block.items.forEach(function (item) {
-          var li = el('li');
-          li.appendChild(el('span', null, item.text));
-          li.appendChild(document.createTextNode(' '));
-          if (item.phoneAgency && agenciesById[item.phoneAgency]) {
-            (agenciesById[item.phoneAgency].phones || []).forEach(function (p) {
-              li.appendChild(document.createTextNode(' '));
-              var t = document.createElement('a');
-              t.className = 'phone-link';
-              t.href = window.SFA.telHref(p.number);
-              t.textContent = window.SFA.prettyPhone(p.number);
-              li.appendChild(t);
-              li.appendChild(document.createTextNode(' '));
-              li.appendChild(window.SFA.phoneStateNode(p));
-            });
-          }
-          var src = el('span', 'source-line');
-          if (item.source) {
-            var a = document.createElement('a');
-            a.href = item.source.url;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.textContent = item.source.title;
-            src.appendChild(document.createTextNode('Source: '));
-            src.appendChild(a);
-          } else {
-            src.classList.add('own-advice');
-            src.textContent = 'Our own advice, not from an agency.';
-          }
-          li.appendChild(src);
-          ul.appendChild(li);
+          ul.appendChild(sourcedItem(item, sources));
         });
         body.appendChild(ul);
+        var srcLine = blockSources(sources);
+        if (srcLine) body.appendChild(srcLine);
         body.appendChild(el('h4', 'helper-dir-title', block.directoryTitle));
         var dir = el('ul', 'helper-directory');
         (block.directory || []).forEach(function (id) {
@@ -554,6 +600,42 @@
         return sec;
       }
 
+      function stillInContact() {
+        return collectTags().indexOf('contact_ongoing') !== -1;
+      }
+
+      function denialBlock() {
+        var block = stepsCatalog.helperDenial;
+        if (!block || !stillInContact()) return null;
+        var sec = el('section', 'helper-denial');
+        sec.setAttribute('aria-labelledby', 'helper-denial');
+        var h3 = el('h3', null, block.title);
+        h3.id = 'helper-denial';
+        sec.appendChild(h3);
+        sec.appendChild(el('p', null, block.intro));
+        data.familyGuide.scenarios.forEach(function (sc) {
+          if (sc.id !== block.scenario) return;
+          sc.lines.slice(0, block.lines).forEach(function (line) {
+            sec.appendChild(sayBlock(line, 'You can say'));
+          });
+        });
+        var link = el('a', 'btn', block.linkLabel);
+        link.href = 'family.html#scenario=' + block.scenario;
+        sec.appendChild(link);
+        sec.appendChild(el('p', 'step-note', block.linkNote));
+        sec.appendChild(el('h4', 'helper-dir-title', block.aloneTitle));
+        var ul = el('ul', 'helper-items');
+        var sources = [];
+        block.alone.forEach(function (item) {
+          ul.appendChild(sourcedItem(item, sources));
+        });
+        sec.appendChild(ul);
+        var srcLine = blockSources(sources);
+        if (srcLine) sec.appendChild(srcLine);
+        if (data.familyGuide.hardLine) sec.appendChild(sayBlock(data.familyGuide.hardLine, block.hardLineLabel));
+        return sec;
+      }
+
       function walletCard() {
         var sec = el('section', 'wallet-card');
         sec.setAttribute('aria-labelledby', 'wallet-title');
@@ -593,10 +675,64 @@
         return sec;
       }
 
+      // Who-to-call side column (CSS shows it at 64rem and wider): phones and helper line of the current step, from the same step data.
+      function sideHasContent(s) {
+        return !!((s.phones && s.phones.length) || (s.helper && s.helper.say && s.helper.say.length));
+      }
+
+      function clearSide() {
+        if (!sideRoot) return;
+        sideRoot.hidden = true;
+        sideRoot.innerHTML = '';
+        sideSteps = [];
+        sideCurrentId = null;
+      }
+
+      function renderSide() {
+        if (!sideRoot) return;
+        var currentIndex = -1;
+        sideSteps.forEach(function (s, i) {
+          if (s.id === sideCurrentId) currentIndex = i;
+        });
+        var open = sideSteps.filter(function (s) {
+          return !state.checked[s.id];
+        });
+        var pick = null;
+        open.forEach(function (s) {
+          if (!pick && sideSteps.indexOf(s) >= currentIndex) pick = s;
+        });
+        if (!pick) pick = open[0] || null;
+        if (pick) sideCurrentId = pick.id;
+        sideRoot.innerHTML = '';
+        if (!pick) {
+          sideRoot.hidden = true;
+          return;
+        }
+        var h3 = el('h3', null, stepsCatalog.sideColumn.title);
+        h3.id = 'plan-side-title';
+        sideRoot.appendChild(h3);
+        sideRoot.appendChild(el('h4', null, pick.title));
+        var contacts = contactList(pick, true);
+        if (contacts) sideRoot.appendChild(contacts);
+        var mode = helperMode();
+        var labels = stepsCatalog.helperLabels;
+        ((pick.helper && pick.helper.say) || []).forEach(function (line) {
+          sideRoot.appendChild(sayBlock(line, mode === 'helper' ? labels.say : 'If you are the helper, you say:', 'say-helper'));
+        });
+        sideRoot.hidden = false;
+      }
+
       function stepCard(s, number) {
         var card = el('article', 'step-card');
         card.dataset.stepId = s.id;
         if (state.checked[s.id]) card.classList.add('is-done');
+
+        card.addEventListener('focusin', function () {
+          if (sideHasContent(s) && sideCurrentId !== s.id) {
+            sideCurrentId = s.id;
+            renderSide();
+          }
+        });
 
         var head = el('div', 'step-head');
         head.appendChild(el('span', 'step-number', number + '.'));
@@ -609,25 +745,25 @@
         what.appendChild(document.createTextNode(s.what));
         card.appendChild(what);
 
-        var why = el('p');
+        var why = el('p', 'step-why');
         why.appendChild(el('span', 'step-label', 'Why: '));
         why.appendChild(document.createTextNode(s.why));
         card.appendChild(why);
 
         var mode = helperMode();
         (s.say || []).forEach(function (line) {
-          var label = mode === 'helper' ? 'Your relative says' : 'Say this';
+          var label = mode === 'helper' ? 'Your relative says' : mode === 'both' ? 'The person who was scammed says:' : 'Say this';
           card.appendChild(sayBlock(line, label));
         });
         if (mode !== 'me' && s.helper) {
           var labels = stepsCatalog.helperLabels;
-          [['say', 'You say (the helper)', 'If you are the helper, you say'],
-            ['withThem', labels.withThem, 'If you are the helper and they are with you or on the call'],
-            ['cannotJoin', labels.cannotJoin, 'If you are the helper and they cannot join right now']
+          [['say', 'You say (the helper)', 'If you are the helper, you say:'],
+            ['withThem', labels.withThem, 'If you are the helper and they are with you or on the call:'],
+            ['cannotJoin', labels.cannotJoin, 'If you are the helper and they cannot join right now:']
           ].forEach(function (group) {
             (s.helper[group[0]] || []).forEach(function (line) {
               var label = mode === 'helper' ? (group[0] === 'say' ? labels.say : group[1]) : group[2];
-              card.appendChild(sayBlock(line, label, 'say-helper'));
+              card.appendChild(sayBlock(line, label, group[0] === 'say' ? 'say-helper say-mine' : 'say-helper'));
             });
           });
         }
@@ -654,6 +790,7 @@
           state.checked[s.id] = cb.checked;
           card.classList.toggle('is-done', cb.checked);
           save();
+          renderSide();
           window.SFA.announce(cb.checked ? s.title + ' marked done.' : s.title + ' unmarked.');
         });
         done.appendChild(cb);
@@ -661,6 +798,58 @@
         card.appendChild(done);
 
         return card;
+      }
+
+      // Start over sits at the end of the plan and asks in the page, not with a browser pop-up.
+      // "Keep my plan" is the safe default: it takes focus, and Escape picks it.
+      function startOverBlock() {
+        var copy = data.copy.startOver.plan;
+        var wrap = el('div', 'plan-end no-print');
+        var open = el('button', 'btn', copy.button);
+        open.type = 'button';
+        open.setAttribute('aria-expanded', 'false');
+        open.setAttribute('aria-controls', 'start-over-confirm');
+        wrap.appendChild(open);
+
+        var ask = el('div', 'confirm');
+        ask.id = 'start-over-confirm';
+        ask.hidden = true;
+        ask.setAttribute('role', 'group');
+        ask.setAttribute('aria-label', copy.button);
+        ask.appendChild(el('p', null, copy.prompt));
+        var row = el('div', 'plan-actions');
+        var keep = el('button', 'btn primary', copy.keep);
+        keep.type = 'button';
+        var go = el('button', 'btn', copy.confirm);
+        go.type = 'button';
+        row.appendChild(keep);
+        row.appendChild(go);
+        ask.appendChild(row);
+        wrap.appendChild(ask);
+
+        function close() {
+          ask.hidden = true;
+          open.setAttribute('aria-expanded', 'false');
+          open.focus();
+        }
+        open.addEventListener('click', function () {
+          ask.hidden = false;
+          open.setAttribute('aria-expanded', 'true');
+          keep.focus();
+        });
+        keep.addEventListener('click', close);
+        ask.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') close();
+        });
+        go.addEventListener('click', function () {
+          storage.clear();
+          state = freshState();
+          planRoot.innerHTML = '';
+          planRoot.hidden = true;
+          clearSide();
+          render();
+        });
+        return wrap;
       }
 
       function buildPlanHeader() {
@@ -691,18 +880,6 @@
           window.SFA.announce(on ? 'Larger text on.' : 'Larger text off.');
         });
         acts.appendChild(bigBtn);
-
-        var resetBtn = el('button', 'btn', 'Start over');
-        resetBtn.type = 'button';
-        resetBtn.addEventListener('click', function () {
-          if (!window.confirm('Start over? Your answers on this device will be erased.')) return;
-          storage.clear();
-          state = freshState();
-          planRoot.innerHTML = '';
-          planRoot.hidden = true;
-          render();
-        });
-        acts.appendChild(resetBtn);
 
         head.appendChild(acts);
         return head;
@@ -745,6 +922,8 @@
           if (jump) planRoot.appendChild(jump);
           var words = wordsBlock();
           if (words) extras.push(words);
+          var denial = mode === 'helper' ? denialBlock() : null;
+          if (denial) extras.push(denial);
           var helperCard = helperCardEl(mode === 'both');
           if (helperCard) extras.push(helperCard);
         }
@@ -786,8 +965,16 @@
         }
         planRoot.appendChild(listWrap);
         planRoot.appendChild(crisisBox());
-        planRoot.appendChild(walletCard());
+        var sources = printSources(planRoot);
+        if (sources) planRoot.appendChild(sources);
         planRoot.appendChild(privacyNote());
+        planRoot.appendChild(walletCard());
+        planRoot.appendChild(startOverBlock());
+
+        sideSteps = mode === 'me' ? [] : steps.filter(sideHasContent);
+        sideCurrentId = null;
+        if (sideSteps.length) renderSide();
+        else clearSide();
 
         var focusTarget = planRoot.querySelector('#plan-title');
         if (focusTarget) focusTarget.focus();
@@ -798,6 +985,7 @@
         document.body.classList.remove('plan-shown', 'plan-helper');
         planRoot.hidden = true;
         planRoot.innerHTML = '';
+        clearSide();
         root.hidden = false;
         var body = root.querySelector('#wiz-body') || root;
         body.innerHTML = '';

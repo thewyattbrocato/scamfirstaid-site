@@ -22,13 +22,15 @@
   </nav>
 </header>
 
+<!-- BANNER:START -->
 <div class="banner-warning">
-  <p class="banner-full"><strong>Already lost money?</strong> Expect fake "recovery agents." They promise to get your money back and ask for a fee first. Government agencies like the CFTC never ask you for money. Be wary of anyone who wants payment first, even to "recover" funds. We never charge anything.</p>
+  <p class="banner-full"><strong>Already lost money?</strong> Expect fake &quot;recovery agents.&quot; They promise to get your money back and ask for a fee first. Government agencies like the CFTC never ask you for money. Be wary of anyone who wants payment first, even to &quot;recover&quot; funds. We never charge anything.</p>
   <details class="banner-short">
     <summary><span><strong>Lost money?</strong> Beware fees.</span></summary>
-    <p>They promise to get your money back and ask for a fee first. Government agencies like the CFTC never ask you for money. Be wary of anyone who wants payment first, even to "recover" funds. We never charge anything.</p>
+    <p>They promise to get your money back and ask for a fee first. Government agencies like the CFTC never ask you for money. Be wary of anyone who wants payment first, even to &quot;recover&quot; funds. We never charge anything.</p>
   </details>
 </div>
+<!-- BANNER:END -->
 
 <main id="main">
   <div class="page-intro">
@@ -37,14 +39,14 @@
   </div>
 
   <section id="wizard" aria-labelledby="wiz-title">
-    <h2 id="wiz-title">Answer a few questions</h2>
+    <h2 id="wiz-title" class="visually-hidden">Answer a few questions</h2>
     <div id="wiz-body"></div>
     <noscript>
       <h3>The short version, no JavaScript needed</h3>
       <ol>
         <li><strong>Call your bank's fraud line now.</strong> Use the number on the back of your card or a paper statement. Ask them to flag your account and review recent activity. Say: "Someone scammed me. Please flag my account."</li>
         <li><strong>Wired money?</strong> Ask your bank to pull the wire back (a recall). The FBI's Recovery Asset Team can help ask banks to freeze money sent by wire. It helps most when you report as quickly as possible. The quicker you act, the better your chance of getting your money back.</li>
-        <li><strong>Paid with gift cards?</strong> Call the company now. Apple: <a href="tel:+18002752273">1-800-275-2273</a> <span class="phone-state">Checked Oct 3, 2026</span>. Amazon: <a href="tel:+18882804331">1-888-280-4331</a> <span class="phone-state phone-state-flag">Not verified. The FTC lists this number. Amazon's own help pages do not. You can also use the number on the back of the card.</span> Target: <a href="tel:+18005442943">1-800-544-2943</a> <span class="phone-state">Checked Oct 3, 2026</span>. Google Play takes reports online - use the <a href="https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams" target="_blank" rel="noopener noreferrer">FTC contact list</a>.</li>
+        <li><strong>Paid with gift cards?</strong> Call the company now. Apple: <a href="tel:+18002752273">1-800-275-2273</a> <span class="phone-state">Checked Oct 3, 2026</span>. Amazon takes reports online, not by phone: sign in and use Contact Us in its Help pages. Target: <a href="tel:+18005442943">1-800-544-2943</a> <span class="phone-state">Checked Oct 3, 2026</span>. Google Play takes reports online - use the <a href="https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams" target="_blank" rel="noopener noreferrer">FTC contact list</a>.</li>
         <li><strong>Forward scam texts to 7726.</strong> When your carrier replies, send them the sender's number. See the <a href="https://www.fcc.gov/consumers/guides/stop-unwanted-robocalls-and-texts" target="_blank" rel="noopener noreferrer">FCC guide</a>.</li>
         <li><strong>Debit card, payment app, or ACH bank transfer you did not approve?</strong> Tell your bank: "Please treat this as a disputed error under federal rules. If you need more than 10 business days, give me provisional credit now." Try to report within 60 days of the statement showing it. Some cases can take 45 or 90 days. Read the <a href="https://www.consumerfinance.gov/rules-policy/regulations/1005/11/" target="_blank" rel="noopener noreferrer">CFPB rule</a>. If you sent the payment yourself, getting it back is harder, not hopeless.</li>
         <li><strong>Bank said no or went quiet?</strong> Complain to the <a href="https://www.consumerfinance.gov/complaint/" target="_blank" rel="noopener noreferrer">CFPB</a>. Companies must answer.</li>
@@ -58,150 +60,257 @@
     </noscript>
   </section>
 
-  <div id="plan" hidden></div>
+  <div class="plan-layout">
+    <div id="plan" hidden></div>
+    <aside id="plan-side" class="plan-side" aria-labelledby="plan-side-title" hidden></aside>
+  </div>
 
   <section id="help-directory" aria-labelledby="help-dir-title">
     <h2 id="help-dir-title">Where to get help</h2>
     <p>Every service below is an official source. Each row says what it is for and when it helps.</p>
 <!-- HELP-DIRECTORY:START -->
-    <details class="help-directory" open>
+    <details class="help-directory">
       <summary>All 27 helpers, grouped by timing</summary>
       <ul class="directory-list">
       <li class="dir-row" data-agency="ftc-giftcards">
         <p class="dir-head"><strong>FTC gift card scam contacts list</strong> <span class="dir-chip">First hour</span></p>
         <p class="dir-for">Find the current phone numbers for gift-card company fraud teams.</p>
-        <p class="dir-meta"><a href="https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams" target="_blank" rel="noopener noreferrer">FTC: Avoiding and Reporting Gift Card Scams</a> · <a href="tel:+18002752273">1-800-275-2273</a> Apple or iTunes gift cards <span class="phone-state">Checked Oct 3, 2026</span> · <a href="tel:+18882804331">1-888-280-4331</a> Amazon gift cards <span class="phone-state phone-state-flag">Not verified. The FTC lists this number. Amazon's own help pages do not. You can also use the number on the back of the card.</span> · <a href="tel:+18005442943">1-800-544-2943</a> Target gift cards <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:+18002752273">1-800-275-2273</a> <span class="dir-call-label">Apple or iTunes gift cards</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+          <li><a class="phone-link call-btn" href="tel:+18005442943">1-800-544-2943</a> <span class="dir-call-label">Target gift cards</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams" target="_blank" rel="noopener noreferrer">FTC: Avoiding and Reporting Gift Card Scams</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ftc-crypto">
         <p class="dir-head"><strong>FTC: cryptocurrency scams</strong> <span class="dir-chip">First hour</span></p>
         <p class="dir-for">Learn why crypto has no chargeback and why fast reports still matter.</p>
-        <p class="dir-meta"><a href="https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams" target="_blank" rel="noopener noreferrer">FTC: What to know about cryptocurrency and scams</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams" target="_blank" rel="noopener noreferrer">FTC: What to know about cryptocurrency and scams</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="cfpb-reg-e">
         <p class="dir-head"><strong>CFPB electronic-transfer rule</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Read the federal clock your bank must follow on disputed transfers.</p>
-        <p class="dir-meta"><a href="https://www.consumerfinance.gov/rules-policy/regulations/1005/11/" target="_blank" rel="noopener noreferrer">CFPB electronic-transfer rule</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.consumerfinance.gov/rules-policy/regulations/1005/11/" target="_blank" rel="noopener noreferrer">CFPB electronic-transfer rule</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="cftc-recovery-frauds">
         <p class="dir-head"><strong>CFTC: recovery fraud warnings</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Check why fee-based offers to trace or recover crypto are scams.</p>
-        <p class="dir-meta"><a href="https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/RecoveryFrauds.html" target="_blank" rel="noopener noreferrer">CFTC: Recovery frauds</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/RecoveryFrauds.html" target="_blank" rel="noopener noreferrer">CFTC: Recovery frauds</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ovc-elder-hotline">
         <p class="dir-head"><strong>DOJ National Elder Fraud Hotline</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Report fraud against anyone age 60 or older to a case manager.</p>
-        <p class="dir-for">Scammers use the hotline's name and phone number. They threaten to file a suit. They ask for personal information or money. Do not give personal information, such as a social security number, or money.</p>
-        <p class="dir-meta"><a href="https://ovc.ojp.gov/program/stop-elder-fraud/providing-help-restoring-hope" target="_blank" rel="noopener noreferrer">National Elder Fraud Hotline</a> · <a href="tel:+18333728311">1-833-372-8311</a> National Elder Fraud Hotline (Mon-Fri, 10 a.m.-6 p.m. ET) <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <p class="dir-warn">Scammers use the hotline's name and phone number. They threaten to file a suit. They ask for personal information or money. Do not give personal information, such as a social security number, or money.</p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:+18333728311">1-833-372-8311</a> <span class="dir-call-label">National Elder Fraud Hotline (Mon-Fri, 10 a.m.-6 p.m. ET)</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://ovc.ojp.gov/program/stop-elder-fraud/providing-help-restoring-hope" target="_blank" rel="noopener noreferrer">National Elder Fraud Hotline</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ic3">
         <p class="dir-head"><strong>FBI Internet Crime Complaint Center (IC3)</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Quick reports let agents ask banks to freeze wire money.</p>
-        <p class="dir-meta"><a href="https://www.ic3.gov/" target="_blank" rel="noopener noreferrer">IC3.gov</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.ic3.gov/" target="_blank" rel="noopener noreferrer">IC3.gov</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="fcc-7726-guide">
         <p class="dir-head"><strong>FCC guide: stop unwanted texts (7726)</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Learn how to forward scam texts to your carrier at 7726.</p>
-        <p class="dir-meta"><a href="https://www.fcc.gov/consumers/guides/stop-unwanted-robocalls-and-texts" target="_blank" rel="noopener noreferrer">fcc.gov/consumers/guides/stop-unwanted-robocalls-and-texts</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.fcc.gov/consumers/guides/stop-unwanted-robocalls-and-texts" target="_blank" rel="noopener noreferrer">fcc.gov/consumers/guides/stop-unwanted-robocalls-and-texts</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ftc-reportfraud">
         <p class="dir-head"><strong>FTC Report Fraud</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">File a fraud report that feeds federal investigations.</p>
-        <p class="dir-meta"><a href="https://reportfraud.ftc.gov/" target="_blank" rel="noopener noreferrer">ReportFraud.ftc.gov</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://reportfraud.ftc.gov/" target="_blank" rel="noopener noreferrer">ReportFraud.ftc.gov</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ftc-credit-freezes">
         <p class="dir-head"><strong>FTC: credit freezes and fraud alerts</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Follow the official how-to for a free lock or a fast fraud alert.</p>
-        <p class="dir-meta"><a href="https://consumer.ftc.gov/articles/credit-freezes-and-fraud-alerts" target="_blank" rel="noopener noreferrer">FTC: Credit Freezes and Fraud Alerts</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://consumer.ftc.gov/articles/credit-freezes-and-fraud-alerts" target="_blank" rel="noopener noreferrer">FTC: Credit Freezes and Fraud Alerts</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ftc-scammed">
         <p class="dir-head"><strong>FTC: what to do if you were scammed</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">See the FTC list of first moves after any scam, with links to each helper.</p>
-        <p class="dir-meta"><a href="https://consumer.ftc.gov/articles/what-do-if-you-were-scammed" target="_blank" rel="noopener noreferrer">FTC: What to do if you were scammed</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://consumer.ftc.gov/articles/what-do-if-you-were-scammed" target="_blank" rel="noopener noreferrer">FTC: What to do if you were scammed</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="identitytheft">
         <p class="dir-head"><strong>IdentityTheft.gov</strong> <span class="dir-chip">First day</span></p>
         <p class="dir-for">Build a personal identity-theft recovery plan with ready-made letters.</p>
-        <p class="dir-meta"><a href="https://www.identitytheft.gov/" target="_blank" rel="noopener noreferrer">IdentityTheft.gov</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.identitytheft.gov/" target="_blank" rel="noopener noreferrer">IdentityTheft.gov</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="cfpb-complaint">
         <p class="dir-head"><strong>CFPB complaint portal</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Complain when your bank denies a fraud claim or stalls past its deadline.</p>
-        <p class="dir-meta"><a href="https://www.consumerfinance.gov/complaint/" target="_blank" rel="noopener noreferrer">CFPB complaint portal</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.consumerfinance.gov/complaint/" target="_blank" rel="noopener noreferrer">CFPB complaint portal</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ovc-compensation">
         <p class="dir-head"><strong>Crime victim compensation funds</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Ask whether state funds can pay back costs such as counseling or lost pay.</p>
-        <p class="dir-meta"><a href="https://ovc.ojp.gov/topics/victim-compensation" target="_blank" rel="noopener noreferrer">OVC: Victim compensation</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://ovc.ojp.gov/topics/victim-compensation" target="_blank" rel="noopener noreferrer">OVC: Victim compensation</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="fcc-complaints">
         <p class="dir-head"><strong>FCC Consumer Complaints</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Complain about unwanted calls and texts to the phone regulator.</p>
-        <p class="dir-meta"><a href="https://consumercomplaints.fcc.gov/hc/en-us" target="_blank" rel="noopener noreferrer">consumercomplaints.fcc.gov</a> · <a href="tel:+18882255322">1-888-225-5322</a> FCC consumer line <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:+18882255322">1-888-225-5322</a> <span class="dir-call-label">FCC consumer line</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://consumercomplaints.fcc.gov/hc/en-us" target="_blank" rel="noopener noreferrer">consumercomplaints.fcc.gov</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="irs-scams">
         <p class="dir-head"><strong>IRS identity theft and scam reporting</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Report tax identity theft and follow the official recovery steps.</p>
-        <p class="dir-meta"><a href="https://www.irs.gov/identity-theft-fraud-scams" target="_blank" rel="noopener noreferrer">irs.gov identity theft and scams</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.irs.gov/identity-theft-fraud-scams" target="_blank" rel="noopener noreferrer">irs.gov identity theft and scams</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ssa-scams">
         <p class="dir-head"><strong>Social Security scams hub</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Report scams at the hub, or call to block electronic access to your record.</p>
-        <p class="dir-meta"><a href="https://www.ssa.gov/scam/" target="_blank" rel="noopener noreferrer">SSA scam hub</a> · <a href="https://oig.ssa.gov/report/" target="_blank" rel="noopener noreferrer">SSA scam report form</a> · <a href="tel:+18007721213">1-800-772-1213</a> Social Security <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:+18007721213">1-800-772-1213</a> <span class="dir-call-label">Social Security</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://www.ssa.gov/scam/" target="_blank" rel="noopener noreferrer">SSA scam hub</a></li>
+          <li><a href="https://oig.ssa.gov/report/" target="_blank" rel="noopener noreferrer">SSA scam report form</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="state-consumer">
         <p class="dir-head"><strong>State consumer protection office</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Find your state consumer office, which handles local scams.</p>
-        <p class="dir-meta"><a href="https://www.usa.gov/state-consumer" target="_blank" rel="noopener noreferrer">USA.gov state consumer finder</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.usa.gov/state-consumer" target="_blank" rel="noopener noreferrer">USA.gov state consumer finder</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="uspis">
         <p class="dir-head"><strong>US Postal Inspection Service</strong> <span class="dir-chip">First week</span></p>
         <p class="dir-for">Report crimes that moved through the mail to postal inspectors.</p>
-        <p class="dir-meta"><a href="https://www.uspis.gov/report" target="_blank" rel="noopener noreferrer">uspis.gov/report</a> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.uspis.gov/report" target="_blank" rel="noopener noreferrer">uspis.gov/report</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="lifeline-988">
         <p class="dir-head"><strong>988 Suicide &amp; Crisis Lifeline</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Reach free, private support day and night when distress runs high.</p>
-        <p class="dir-meta"><a href="https://988lifeline.org/" target="_blank" rel="noopener noreferrer">988lifeline.org</a> · <a href="tel:988">988</a> Call or text <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:988">988</a> <span class="dir-call-label">Call or text</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://988lifeline.org/" target="_blank" rel="noopener noreferrer">988lifeline.org</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="annualcreditreport">
         <p class="dir-head"><strong>AnnualCreditReport.com</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Pull your free credit reports from all three bureaus.</p>
-        <p class="dir-meta"><a href="https://www.annualcreditreport.com/index.action" target="_blank" rel="noopener noreferrer">AnnualCreditReport.com</a> · <a href="tel:+18773228228">1-877-322-8228</a> AnnualCreditReport.com phone <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:+18773228228">1-877-322-8228</a> <span class="dir-call-label">AnnualCreditReport.com phone</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://www.annualcreditreport.com/index.action" target="_blank" rel="noopener noreferrer">AnnualCreditReport.com</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="cfpb-older-adults">
         <p class="dir-head"><strong>CFPB: fraud guides for older adults</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Get free federal handouts about scams against older adults.</p>
-        <p class="dir-meta"><a href="https://www.consumerfinance.gov/consumer-tools/educator-tools/resources-for-older-adults/protecting-against-fraud/" target="_blank" rel="noopener noreferrer">CFPB: Protecting against fraud</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.consumerfinance.gov/consumer-tools/educator-tools/resources-for-older-adults/protecting-against-fraud/" target="_blank" rel="noopener noreferrer">CFPB: Protecting against fraud</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="cfpb-msem">
         <p class="dir-head"><strong>CFPB: Managing Someone Else's Money</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Read the free guides for helpers who handle another person's money.</p>
-        <p class="dir-meta"><a href="https://www.consumerfinance.gov/consumer-tools/managing-someone-elses-money/" target="_blank" rel="noopener noreferrer">CFPB: Managing Someone Else's Money</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.consumerfinance.gov/consumer-tools/managing-someone-elses-money/" target="_blank" rel="noopener noreferrer">CFPB: Managing Someone Else's Money</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="cftc-romance">
         <p class="dir-head"><strong>CFTC: romance scam advisory</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Learn how romance scams drain savings through fake trading sites.</p>
-        <p class="dir-meta"><a href="https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/RomanceScam.html" target="_blank" rel="noopener noreferrer">CFTC: Romance scams</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/RomanceScam.html" target="_blank" rel="noopener noreferrer">CFTC: Romance scams</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="doj-elderjustice">
         <p class="dir-head"><strong>DOJ Elder Justice Initiative</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Find Justice Department steps on elder abuse.</p>
-        <p class="dir-meta"><a href="https://www.justice.gov/elderjustice" target="_blank" rel="noopener noreferrer">Elder Justice Initiative</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.justice.gov/elderjustice" target="_blank" rel="noopener noreferrer">Elder Justice Initiative</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="eldercare-locator">
         <p class="dir-head"><strong>Eldercare Locator</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Find local elder help, or your state's Adult Protective Services number, by phone.</p>
-        <p class="dir-meta"><a href="https://eldercare.acl.gov/" target="_blank" rel="noopener noreferrer">eldercare.acl.gov</a> · <a href="tel:+18006771116">1-800-677-1116</a> Eldercare Locator <span class="phone-state">Checked Oct 3, 2026</span> <span class="dir-reviewed">Reviewed 2026-08</span></p>
+        <ul class="dir-calls">
+          <li><a class="phone-link call-btn" href="tel:+18006771116">1-800-677-1116</a> <span class="dir-call-label">Eldercare Locator</span> <span class="phone-state">Checked Oct 3, 2026</span></li>
+        </ul>
+        <ul class="dir-links">
+          <li><a href="https://eldercare.acl.gov/" target="_blank" rel="noopener noreferrer">eldercare.acl.gov</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-08</span></p>
       </li>
       <li class="dir-row" data-agency="ncea">
         <p class="dir-head"><strong>National Center on Elder Abuse</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Learn the signs of elder abuse and how to report it.</p>
-        <p class="dir-meta"><a href="https://ncea.acl.gov" target="_blank" rel="noopener noreferrer">National Center on Elder Abuse</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://ncea.acl.gov" target="_blank" rel="noopener noreferrer">National Center on Elder Abuse</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       <li class="dir-row" data-agency="nia-elder-abuse">
         <p class="dir-head"><strong>NIA: elder abuse explainer</strong> <span class="dir-chip">Ongoing</span></p>
         <p class="dir-for">Read a plain health guide to money abuse signs in older adults.</p>
-        <p class="dir-meta"><a href="https://www.nia.nih.gov/health/elder-abuse" target="_blank" rel="noopener noreferrer">NIA: Elder abuse</a> <span class="dir-reviewed">Reviewed 2026-09</span></p>
+        <ul class="dir-links">
+          <li><a href="https://www.nia.nih.gov/health/elder-abuse" target="_blank" rel="noopener noreferrer">NIA: Elder abuse</a></li>
+        </ul>
+        <p class="dir-meta"><span class="dir-reviewed">Reviewed 2026-09</span></p>
       </li>
       </ul>
     </details>

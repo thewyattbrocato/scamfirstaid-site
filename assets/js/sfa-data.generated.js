@@ -2,7 +2,7 @@
 window.SFA_DATA = Object.freeze({
   "generatedFrom": "data/",
   "agencies": {
-    "registryVersion": 6,
+    "registryVersion": 7,
     "agencies": [
       {
         "id": "ftc-reportfraud",
@@ -165,7 +165,7 @@ window.SFA_DATA = Object.freeze({
       {
         "id": "ftc-giftcards",
         "name": "FTC gift card scam contacts list",
-        "summary": "The FTC keeps the current contact list for gift card companies. Numbers below come from that page.",
+        "summary": "The FTC keeps the current contact list for gift card companies. Numbers below come from that page. Amazon takes gift card scam reports online, not by phone.",
         "journey": "hour",
         "for": "Find the current phone numbers for gift-card company fraud teams.",
         "urls": [
@@ -180,12 +180,6 @@ window.SFA_DATA = Object.freeze({
             "number": "18002752273",
             "verifiedState": "verified",
             "verifiedOn": "2026-10-03"
-          },
-          {
-            "label": "Amazon gift cards",
-            "number": "18882804331",
-            "verifiedState": "unverified",
-            "verifiedNote": "The FTC lists this number. Amazon's own help pages do not. You can also use the number on the back of the card."
           },
           {
             "label": "Target gift cards",
@@ -811,7 +805,7 @@ window.SFA_DATA = Object.freeze({
     ]
   },
   "steps": {
-    "catalogVersion": 14,
+    "catalogVersion": 17,
     "evidenceChecklist": {
       "title": "Your evidence folder",
       "intro": "Keep these in one folder. They back up every call you make.",
@@ -840,6 +834,62 @@ window.SFA_DATA = Object.freeze({
           "lines": 2
         }
       }
+    },
+    "helperDenial": {
+      "title": "If they say it is not a scam",
+      "intro": "They may not believe you yet. You do not have to win that talk today. These words and steps still help.",
+      "scenario": "denial",
+      "lines": 2,
+      "linkLabel": "Open the words for when they will not listen",
+      "linkNote": "The page opens on lines for a relative who does not believe it. Nothing you answered is sent anywhere.",
+      "aloneTitle": "What you can still do on your own",
+      "alone": [
+        {
+          "text": "You can report the scam for them at ReportFraud.ftc.gov. The form lets you say you are reporting for someone else.",
+          "source": {
+            "title": "FTC ReportFraud FAQ",
+            "url": "https://reportfraud.ftc.gov/faq",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "If the scam happened online, you can also report it for them at IC3.gov. IC3 takes reports of cyber-enabled crime, which is crime that happened online or through the internet.",
+          "source": {
+            "title": "IC3 FAQ",
+            "url": "https://www.ic3.gov/Home/FAQ",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "Is your relative 60 or older? You can call the elder fraud hotline for them. It is open Monday to Friday, 10 a.m. to 6 p.m. Eastern.",
+          "phoneAgency": "ovc-elder-hotline",
+          "source": {
+            "title": "National Elder Fraud Hotline",
+            "url": "https://ovc.ojp.gov/program/elder-fraud-abuse/national-elder-fraud-hotline",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "Money still leaving? Call the Eldercare Locator to find your state's Adult Protective Services number.",
+          "phoneAgency": "eldercare-locator",
+          "source": {
+            "title": "Eldercare Locator",
+            "url": "https://eldercare.acl.gov/",
+            "reviewed": "2026-10"
+          }
+        },
+        {
+          "text": "Keep the messages and a note of each payment in one folder. The evidence folder in this plan lists what to keep.",
+          "ownAdvice": true
+        }
+      ],
+      "hardLineLabel": "If you decide to bring in outside help, you can say"
+    },
+    "sideColumn": {
+      "title": "Who to call, and what to say"
+    },
+    "printSources": {
+      "title": "Where these facts come from"
     },
     "helperLabels": {
       "say": "You say (the helper)",
@@ -1013,7 +1063,7 @@ window.SFA_DATA = Object.freeze({
         "say": [
           "\"Someone ran a scam and got my gift card numbers. Can you check the balance, freeze what is left, and refund me?\""
         ],
-        "note": "Companies change their numbers. If a number here does not work, use the FTC page linked below or the number printed on your card.",
+        "note": "Amazon takes gift card scam reports online, not by phone: sign in and use Contact Us in its Help pages. Companies change their numbers. If a number here does not work, use the FTC page linked below or the number printed on your card.",
         "helper": {
           "say": [
             "\"I am helping my relative report a gift card scam. Please tell me what you need from them.\""
@@ -1035,11 +1085,6 @@ window.SFA_DATA = Object.freeze({
             "agency": "ftc-giftcards",
             "phone": "18002752273",
             "label": "Apple or iTunes"
-          },
-          {
-            "agency": "ftc-giftcards",
-            "phone": "18882804331",
-            "label": "Amazon"
           },
           {
             "agency": "ftc-giftcards",
@@ -1451,7 +1496,8 @@ window.SFA_DATA = Object.freeze({
         "title": "Keep a paper trail with local police",
         "what": "You can file a report at your local police station. Bring amounts, dates, names, and receipts. You do not need to name a suspect. It is worth doing for losses you might deduct, insure, or dispute.",
         "why": "An official record helps with later disputes.",
-        "note": "If anyone threatens you or shows up at your door, call 911 right away.",
+        "note": "If you or someone else is in immediate danger, call 911 or your local police.",
+        "sourceUrl": "https://www.ic3.gov/",
         "links": [],
         "phones": [],
         "requireAny": [
@@ -1609,7 +1655,7 @@ window.SFA_DATA = Object.freeze({
     }
   ],
   "familyGuide": {
-    "guideVersion": 6,
+    "guideVersion": 8,
     "title": "Family playbook",
     "intro": "This playbook helps you talk with a family member about scams. It protects their dignity and their independence.",
     "relationships": [
@@ -1661,6 +1707,12 @@ window.SFA_DATA = Object.freeze({
       "grandparent": "\"Grandma, Grandpa - are you safe? Good. Hang up on them now. We will sort the rest out together.\"",
       "partner": "\"Are you safe? Good. Hang up on them now. We will sort the rest out together.\"",
       "relative": "\"Are you safe? Good. Hang up on them now. We will sort the rest out together.\""
+    },
+    "openersDenial": {
+      "parent": "\"Mom, Dad - you do not have to agree with me today. I am worried, and I would like to look at the messages with you.\"",
+      "grandparent": "\"Grandma, Grandpa - you do not have to agree with me today. I am worried, and I would like to look at the messages with you.\"",
+      "partner": "\"You do not have to agree with me today. We are a team, and I would like to look at the messages with you.\"",
+      "relative": "\"You do not have to agree with me today. I am worried, and I would like to look at the messages with you.\""
     },
     "coreScript": {
       "normalize": [
@@ -1859,7 +1911,8 @@ window.SFA_DATA = Object.freeze({
         {
           "level": 1,
           "name": "Alerts on",
-          "text": "Turn on text or email alerts for bank and card activity. This is free in every banking app."
+          "text": "Turn on text or email alerts for bank and card activity. They can help you spot unauthorized activity quickly.",
+          "sourceUrl": "https://www.fdic.gov/consumer-resource-center/closer-look-mobile-banking-more-uses-more-users"
         },
         {
           "level": 2,
@@ -1897,11 +1950,13 @@ window.SFA_DATA = Object.freeze({
           "agency": "ovc-elder-hotline"
         },
         {
-          "text": "Feeling hopeless or overwhelmed? The 988 Lifeline offers free, private support day and night.",
+          "text": "Feeling hopeless or overwhelmed? The 988 Lifeline offers free, private support, day or night.",
+          "sourceUrl": "https://988lifeline.org/",
           "agency": "lifeline-988"
         },
         {
-          "text": "Anyone in immediate danger? Call 911."
+          "text": "Anyone in immediate danger? Call 911.",
+          "sourceUrl": "https://www.justice.gov/elderjustice/find-help-or-report-abuse"
         },
         {
           "text": "Papers or legal forms in question? Talk to an elder-law attorney. Your local Area Agency on Aging can point you to one. Find yours through the Eldercare Locator.",
@@ -1910,14 +1965,15 @@ window.SFA_DATA = Object.freeze({
       ]
     },
     "urgentNote": {
+      "denial": "They may not agree today, and that is all right. Keep the messages as evidence. The After-a-scam wizard shows what you can still do on your own.",
       "ongoing": "Start here today. Stop replying to them. Keep the messages as evidence, then use the After-a-scam wizard for the recovery steps.",
-      "lost": "Be gentle with each other today. When you are ready, the After-a-scam wizard builds the ordered recovery plan in about two minutes."
+      "lost": "Be gentle with each other today. When you are ready, the After-a-scam wizard builds a recovery plan from your answers, one step at a time."
     },
     "reviewed": "2026-08"
   },
   "copy": {
     "crisisBox": {
-      "copyVersion": 2,
+      "copyVersion": 3,
       "title": "Free help, any hour",
       "items": [
         {
@@ -1990,7 +2046,25 @@ window.SFA_DATA = Object.freeze({
           ]
         }
       ],
-      "dangerLine": "Anyone in immediate danger? Call 911."
+      "dangerLine": {
+        "text": "Anyone in immediate danger? Call 911.",
+        "sourceUrl": "https://www.justice.gov/elderjustice/find-help-or-report-abuse"
+      }
+    },
+    "startOver": {
+      "copyVersion": 1,
+      "plan": {
+        "button": "Start over",
+        "prompt": "Start over? This clears your answers and this plan from this device.",
+        "keep": "Keep my plan",
+        "confirm": "Yes, start over"
+      },
+      "family": {
+        "button": "Clear saved choices",
+        "prompt": "Clear the family playbook choices stored on this device?",
+        "keep": "Keep my choices",
+        "confirm": "Clear saved choices"
+      }
     }
   }
 });
