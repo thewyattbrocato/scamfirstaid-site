@@ -542,6 +542,10 @@ window.SFA_DATA = Object.freeze({
         "chipLabel": "Paid with",
         "text": "Did money move to the scammer?",
         "whyWeAsk": "Each payment method has its own recovery path.",
+        "helper": {
+          "text": "Did they send money to the scammer?",
+          "whyWeAsk": "Each way they paid has its own recovery path."
+        },
         "type": "single",
         "options": [
           {
@@ -624,6 +628,10 @@ window.SFA_DATA = Object.freeze({
         "chipLabel": "When",
         "text": "When did the money move?",
         "whyWeAsk": "The quicker you act, the better your chance of getting your money back.",
+        "helper": {
+          "text": "When did their money move?",
+          "whyWeAsk": "The quicker you act, the better their chance of getting their money back."
+        },
         "type": "single",
         "options": [
           {
@@ -666,6 +674,10 @@ window.SFA_DATA = Object.freeze({
         "chipLabel": "Shared",
         "text": "What information did you share? Choose all that apply.",
         "whyWeAsk": "Shared details decide which locks you need.",
+        "helper": {
+          "text": "What information did they share? Choose all that apply.",
+          "whyWeAsk": "Shared details decide which locks they need."
+        },
         "type": "multi",
         "options": [
           {
@@ -708,11 +720,16 @@ window.SFA_DATA = Object.freeze({
         "chipLabel": "Device access",
         "text": "Did anyone get into your device or computer?",
         "whyWeAsk": "Remote access means the scammer may still be watching.",
+        "helper": {
+          "text": "Did anyone get into their device or computer?",
+          "whyWeAsk": "Remote access means the scammer may still be watching them."
+        },
         "type": "single",
         "options": [
           {
             "id": "yes",
             "label": "Yes, I installed software or let them connect",
+            "helperLabel": "Yes, they installed software or let someone connect",
             "tags": [
               "device_remote"
             ],
@@ -740,11 +757,16 @@ window.SFA_DATA = Object.freeze({
         "chipLabel": "Still in contact",
         "text": "Are they still contacting you?",
         "whyWeAsk": "Ongoing contact means more chances to lose money.",
+        "helper": {
+          "text": "Is the scammer still contacting them?",
+          "whyWeAsk": "Ongoing contact means more chances for them to lose money."
+        },
         "type": "single",
         "options": [
           {
             "id": "yes",
             "label": "Yes, they call, text, or email me",
+            "helperLabel": "Yes, the scammer calls, texts, or emails them",
             "tags": [
               "contact_ongoing"
             ],
@@ -772,11 +794,16 @@ window.SFA_DATA = Object.freeze({
         "chipLabel": "Signs of identity theft",
         "text": "Any signs of identity theft? Choose all that apply.",
         "whyWeAsk": "These signs point to loans or accounts opened in your name.",
+        "helper": {
+          "text": "Any signs someone is using their identity? Choose all that apply.",
+          "whyWeAsk": "These signs point to loans or accounts opened in their name."
+        },
         "type": "multi",
         "options": [
           {
             "id": "newaccounts",
             "label": "New accounts opened that I did not open",
+            "helperLabel": "New accounts opened that they did not open",
             "tags": [
               "id_newaccounts"
             ]
@@ -784,6 +811,7 @@ window.SFA_DATA = Object.freeze({
           {
             "id": "charges",
             "label": "Charges I do not recognize",
+            "helperLabel": "Charges they do not recognize",
             "tags": [
               "id_charges"
             ]
@@ -791,6 +819,7 @@ window.SFA_DATA = Object.freeze({
           {
             "id": "addresschange",
             "label": "My mail stopped or my address changed",
+            "helperLabel": "Their mail stopped or their address changed",
             "tags": [
               "id_addresschange"
             ]
@@ -887,6 +916,13 @@ window.SFA_DATA = Object.freeze({
     },
     "sideColumn": {
       "title": "Who to call, and what to say"
+    },
+    "planIndex": {
+      "title": "In this plan",
+      "doneLabel": "Steps done:",
+      "ofWord": "of",
+      "phonesLabel": "Phone numbers",
+      "walletLabel": "Wallet card"
     },
     "printSources": {
       "title": "Where these facts come from"

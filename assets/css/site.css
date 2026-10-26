@@ -983,3 +983,10 @@ a.call-btn {
 }
 .confirm[hidden] { display: none; }
 .confirm p { margin: 0 0 0.5rem; }
+
+/* Plan index: plain anchors at the top of the plan; no sticky, no motion, existing tokens only. */
+.plan-index { margin: 0.75rem 0; }
+.plan-index .done-count { margin: 0 0 0.25rem; font-weight: 700; }
+.plan-index ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 0.875rem; }
+.plan-index li { margin: 0; }
+.plan-index a { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 52px; overflow-wrap: anywhere; }

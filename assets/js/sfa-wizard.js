@@ -158,7 +158,18 @@
         return found;
       }
 
+      // A helper (who = family) is asked about the relative in "they" voice; everyone else keeps the original wording.
+      function voice(q) {
+        var helper = (state.answers.who || [])[0] === 'family' && q.helper;
+        return {
+          text: helper ? q.helper.text : q.text,
+          why: helper ? q.helper.whyWeAsk : q.whyWeAsk,
+          label: function (o) { return helper && o.helperLabel ? o.helperLabel : o.label; }
+        };
+      }
+
       function questionEl(q) {
+        var say = voice(q);
         var wrap = el('div');
         wrap.appendChild(buildProgress(q));
 
@@ -167,12 +178,12 @@
         box.setAttribute('role', 'group');
         box.setAttribute('aria-labelledby', 'q-' + q.id + '-text');
 
-        var title = el('h3', 'qcard-title', q.text);
+        var title = el('h3', 'qcard-title', say.text);
         title.id = 'q-' + q.id + '-text';
         title.setAttribute('tabindex', '-1');
         box.appendChild(title);
 
-        var why = el('p', 'why', 'Why we ask: ' + q.whyWeAsk);
+        var why = el('p', 'why', 'Why we ask: ' + say.why);
         box.appendChild(why);
 
         var choices = el('ul', 'choices');
@@ -181,7 +192,7 @@
         if (q.type === 'single') {
           q.options.forEach(function (o) {
             var li = el('li');
-            var btn = el('button', 'choice', o.label);
+            var btn = el('button', 'choice', say.label(o));
             btn.type = 'button';
             btn.addEventListener('click', function () {
               choose(q, [o.id]);
@@ -201,7 +212,7 @@
               syncExclusive(o, choices);
             });
             label.appendChild(input);
-            label.appendChild(document.createTextNode(' ' + o.label));
+            label.appendChild(document.createTextNode(' ' + say.label(o)));
             li.appendChild(label);
             choices.appendChild(li);
           });
@@ -791,6 +802,7 @@
           card.classList.toggle('is-done', cb.checked);
           save();
           renderSide();
+          updateIndexCounts();
           window.SFA.announce(cb.checked ? s.title + ' marked done.' : s.title + ' unmarked.');
         });
         done.appendChild(cb);
@@ -852,6 +864,50 @@
         return wrap;
       }
 
+      // Short index at the top of the plan: plain in-page anchors, plus a done count read from the Done boxes.
+      function planIndexEl(steps, hasWords) {
+        var copy = stepsCatalog.planIndex;
+        var targets = [];
+        var seen = {};
+        steps.forEach(function (s) {
+          if (seen[s.tier]) return;
+          seen[s.tier] = true;
+          targets.push({ href: '#plan-tier-' + s.tier, label: tierLabel[s.tier] || s.tier });
+          if (targets.length === 1 && hasWords) targets.push({ href: '#helper-words', label: stepsCatalog.helperWords.title });
+        });
+        targets.push({ href: '#crisis-title', label: copy.phonesLabel });
+        targets.push({ href: '#wallet-title', label: copy.walletLabel });
+        var nav = el('nav', 'plan-index');
+        nav.setAttribute('aria-label', copy.title);
+        var count = el('p', 'done-count', copy.doneLabel + ' ');
+        count.appendChild(el('span', null, ''));
+        count.lastChild.setAttribute('data-done-count', '');
+        nav.appendChild(count);
+        var ul = el('ul');
+        targets.forEach(function (t) {
+          var li = el('li');
+          var a = el('a', null, t.label);
+          a.href = t.href;
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+        nav.appendChild(ul);
+        return nav;
+      }
+
+      function updateIndexCounts() {
+        var nav = planRoot.querySelector('.plan-index');
+        if (!nav) return;
+        var of = ' ' + stepsCatalog.planIndex.ofWord + ' ';
+        var total = 0;
+        var done = 0;
+        planRoot.querySelectorAll('.step-card .done-box input').forEach(function (box) {
+          total += 1;
+          if (box.checked) done += 1;
+        });
+        nav.querySelector('[data-done-count]').textContent = done + of + total;
+      }
+
       function buildPlanHeader() {
         var head = el('div', 'plan-header');
         var titleWrap = el('div', 'plan-title-wrap');
@@ -908,7 +964,7 @@
             (state.answers[q.id] || []).forEach(function (pid) {
               var o = optionFor(q, pid);
               if (!o) return;
-              chips.appendChild(el('li', 'chip', (q.chipLabel ? q.chipLabel + ': ' : '') + o.label));
+              chips.appendChild(el('li', 'chip', (q.chipLabel ? q.chipLabel + ': ' : '') + voice(q).label(o)));
             });
           });
           summaryWrap.appendChild(chips);
@@ -927,6 +983,7 @@
           var helperCard = helperCardEl(mode === 'both');
           if (helperCard) extras.push(helperCard);
         }
+        planRoot.appendChild(planIndexEl(steps, mode !== 'me' && !!stepsCatalog.helperWords));
         var evidence = evidenceBox();
         if (evidence) extras.push(evidence);
         extras.push(recap());
@@ -950,7 +1007,9 @@
             currentTier = s.tier;
             currentOl = el('ol', 'plan-list');
             currentOl.start = stepNumber;
-            listWrap.appendChild(el('h3', 'tier-heading', tierLabel[s.tier] || s.tier));
+            var tierHeading = el('h3', 'tier-heading', tierLabel[s.tier] || s.tier);
+            tierHeading.id = 'plan-tier-' + s.tier;
+            listWrap.appendChild(tierHeading);
             listWrap.appendChild(currentOl);
           }
           var item = el('li', 'plan-item');
@@ -970,6 +1029,7 @@
         planRoot.appendChild(privacyNote());
         planRoot.appendChild(walletCard());
         planRoot.appendChild(startOverBlock());
+        updateIndexCounts();
 
         sideSteps = mode === 'me' ? [] : steps.filter(sideHasContent);
         sideCurrentId = null;
@@ -994,7 +1054,7 @@
         body.appendChild(questionEl(q));
         var focusTarget = body.querySelector('.qcard-title');
         if (focusTarget) focusTarget.focus();
-        window.SFA.announce('Question ' + (state.history.length + 1) + ' of ' + branchTotal() + ': ' + q.text);
+        window.SFA.announce('Question ' + (state.history.length + 1) + ' of ' + branchTotal() + ': ' + voice(q).text);
       }
 
       function render() {
